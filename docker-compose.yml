@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+
+  devcontainer:
+    build:
+      target: dev
+    volumes:
+      - ..:/workspaces
+      - command-history-volume:/home/user/.history/
+
+  run:
+    build:
+      target: app
+    tty: true
+    profiles:
+      - app
+    image: ${DOCKER_USERNAME}/minifigures:run-${VERSION}
+
+volumes:
+  command-history-volume:

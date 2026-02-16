@@ -1,0 +1,24 @@
+# Caches
+.*_cache/
+
+# Git
+.git/
+
+# Python
+.venv/
+
+# No data files
+.dvc/cache/
+.dvc/tmp/
+data/
+
+# No notebooks
+*.ipynb
+.ipynb_checkpoints/
+notebooks/
+
+# No linting
+.dmypy.json
+
+# No testing
+tests/
