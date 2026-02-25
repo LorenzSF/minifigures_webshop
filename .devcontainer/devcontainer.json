@@ -9,7 +9,7 @@
     },
     "overrideCommand": true,
     "remoteUser": "user",
-    "postStartCommand": "sudo chown -R user:user /opt/ && uv sync --python ${localEnv:PYTHON_VERSION:3.10} --all-groups && pre-commit install --install-hooks",
+    "postStartCommand": "sudo chown -R user:user /opt/ && uv sync --python ${localEnv:PYTHON_VERSION:3.10} --all-groups && pre-commit install --install-hooks && bash setup_data.sh",
     "customizations": {
         "jetbrains": {
             "backend": "PyCharm",
