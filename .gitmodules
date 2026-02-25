@@ -1,0 +1,3 @@
+[submodule "shared-resources"]
+	path = shared-resources
+	url = https://github.com/kuleuven-realization-of-ai/shared-resources.git
