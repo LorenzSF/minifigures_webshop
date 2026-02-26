@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM ghcr.io/astral-sh/uv:python3.10-bookworm AS dev
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Create and activate a virtual environment [1].
 # [1] https://docs.astral.sh/uv/concepts/projects/config/#project-environment-path
@@ -32,28 +33,29 @@ RUN mkdir ~/.history/ && \
 # Install terraform
 USER root
 RUN --mount=type=cache,target=/var/cache/apt/ \
-    --mount=type=cache,target=/var/lib/apt/ \ 
-    apt-get update && apt-get install -y gnupg software-properties-common && \
-    wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /usr/share/keyrings/hashicorp-archive-keyring.gpg && \ 
+    --mount=type=cache,target=/var/lib/apt/ \
+    apt-get update && apt-get install --no-install-recommends --yes gnupg software-properties-common && \
+    wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /usr/share/keyrings/hashicorp-archive-keyring.gpg && \
     gpg --no-default-keyring \
     --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
-    --fingerprint && \ 
+    --fingerprint && \
     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
     https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
     tee /etc/apt/sources.list.d/hashicorp.list && \
-    apt update && \
-    apt-get install terraform
+    apt-get update && \
+    apt-get install --no-install-recommends --yes terraform
 
 # Install aws CLI
 RUN --mount=type=cache,target=/var/cache/apt/ \
-    --mount=type=cache,target=/var/lib/apt/ \ 
-    apt-get install -y unzip groff less && \
+    --mount=type=cache,target=/var/lib/apt/ \
+    apt-get update && apt-get install --no-install-recommends --yes unzip groff less && \
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     ./aws/install
 
 
 FROM python:3.10-slim AS app
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Configure Python to print tracebacks on crash [1], and to not buffer stdout and stderr [2].
 # [1] https://docs.python.org/3/using/cmdline.html#envvar-PYTHONFAULTHANDLER

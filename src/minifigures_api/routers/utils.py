@@ -1,8 +1,12 @@
 """Utilisation functions."""
 
+from functools import lru_cache
+
 from fastapi import UploadFile
 from PIL import Image
 from starlette.exceptions import HTTPException
+
+from minifigures_model import EncoderDecoder, get_models_folder
 
 
 def extract_images_from_files(files: list[UploadFile]) -> list[Image.Image]:
@@ -16,3 +20,11 @@ def extract_images_from_files(files: list[UploadFile]) -> list[Image.Image]:
         with Image.open(file.file) as img:
             extracted.append(img.convert("RGB").copy())
     return extracted
+
+
+@lru_cache
+def fetch_model(tag: str = "my_model") -> EncoderDecoder:
+    """Fetch a model from the database."""
+    if (get_models_folder() / tag).is_dir():
+        return EncoderDecoder.load(tag)
+    raise HTTPException(status_code=404, detail=f"Model '{tag}' not found")

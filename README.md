@@ -1,38 +1,78 @@
 # Minifigures Webshop
 
-## Welcome! 👋
+## Repository Objective
 
-Welcome to the *Minifigures Webshop* project assignment. The goal of this assignment is to teach the students everything they need to develop and deploy an AI solution from start to finish. For this project, you're going to learn how to create your own *Amazon.com* or *bol.com* like webshop, focussed on LEGO minifigures.
+This repository is the product workspace for an end-to-end AI webshop focused on LEGO minifigures.
 
-![Webshop Example](https://www.sendcloud.nl/wp-content/uploads//2018/04/Amazon-prime.png)
+As stated in the opening part of the course material, this repository is meant to evolve over time. It starts as the implementation workspace for the project and is expected to become the finished product repository by the end of the course.
 
-If you're curious how the final result will look like, go and visit our [reference solution](https://minifigures.radix.ai)!
+The objective is to deliver the core building blocks of a usable AI product in a single repository:
 
+- a dataset and training workflow for multi-label image classification
+- a reusable Python model package
+- a REST API for predictions and data access
+- a Streamlit web interface for product browsing and prediction display
 
+## Current Purpose
 
-## Getting Started 🚀
+At the current stage, the repository already contains the main product foundations:
 
-### Open in GitHub Codespaces
+- a `minifigures_model` package with model and utility code
+- a `minifigures_api` FastAPI application exposing data and prediction endpoints
+- a `minifigures_app` Streamlit application with a home page, product page, and marketplace page
+- notebooks for dataset preparation, custom datasets, and model fine-tuning
+- local dataset assets under `data/`
 
-We recommend to develop in [GitHub Codespaces](https://github.com/features/codespaces), which will automatically open the pre-configured environment so that you can start coding immediately! Click on _Code_ and select _Create codespace_ to start a Dev Container GitHub Codespaces. By default, it will spin up a compute instance with a 2-core CPU, 8GB of RAM, and 32GB of storage. This is enough for this project and also the advised configuration since it prevents you from running out of core hours (240h/month for students).
+In practice, this means the repository already supports a provisional product flow with a frontend, backend, and data assets, while the final trained-model pipeline is still part of the remaining implementation work.
 
-### Develop in the devcontainer
+## Current Structure
 
-By default, GitHub Codespaces will open a _Development Container_ (devcontainer) for you. Within this container, we've pre-configured a virtual environment for you, so you shouldn't worry about installing different packages and can start the project right away! Learn more about this virtual environment and its supported tools in the section "Development tools 🛠️" below.
+The main folders are:
 
+- `src/minifigures_model/`: model definition and model-related utilities
+- `src/minifigures_api/`: backend service and API routers
+- `src/minifigures_app/`: provisional customer-facing web interface built with Streamlit
+- `data/`: dataset files, split files, notebooks, and local product assets
+- `tests/`: import and API tests
+- `terraform/`: infrastructure code for later deployment stages
+- `shared-resources/`: course-provided supporting material
 
-## Development tools 🛠️
+## Environment And Commands
 
-### Uv
+This project uses `uv` for dependency management and `Poe the Poet` for common project commands.
 
-This repository utilises on [uv](https://docs.astral.sh/uv/getting-started/features/), an environment that aims to make Python packaging and dependency management as easy as possible. To get you started, we've added all necessary requirements in the `pyproject.toml` file. However, in case you want to add other packages, you can do so using `uv add {package}` from within the development environment. Add `--group {dev|train|...}` to install the dependency as a training or development dependency, or create your own group. You can also remove packages from your environment using `uv remove {package}`.
+Useful commands:
 
-### Poe the Poet
+- `uv sync --all-groups` installs the project dependencies
+- `uv run poe api` runs the REST API
+- `uv run poe app` runs the Streamlit application
+- `uv run poe lint` runs linting and formatting hooks
+- `uv run poe test` runs the test suite
 
-To make the development of your code go more efficiently, we've included a virtual assistant; [Poe the Poet](https://github.com/nat-n/poethepoet)! Run `poet` from within the development environment to see what it can do. A short summary of the available commands:
+If the minifigures dataset is not available locally, run:
 
-- `poe api` to run the REST API (found in the `src/minifigures_api/` folder)
-- `poe app` to serve the Streamlit application (found in the `src/minifigures_app/` folder)
-- `poe lint` to run the linting checks and fixes over your code
-- `poe test` to test your code
+- `./setup_data.sh`
+
+## Open The Provisional Web Application
+
+To open the current provisional version of the product interface in the available viewer, use two terminals from the repository root.
+
+Terminal 1:
+
+```bash
+uv sync --all-groups
+uv run poe api --dev --host 0.0.0.0 --port 8000
+```
+
+Terminal 2:
+
+```bash
+uv run poe app --host 0.0.0.0 --port 8500
+```
+
+Then open the forwarded port for `8500` in the VS Code port viewer or integrated browser. The backend API documentation is available on port `8000`.
+
+## Current Limitation
+
+The interface can already be opened as a provisional product demo, but full prediction support depends on having a trained model saved in the expected local model folder. Until that model artifact is generated and saved, the interface can be explored but prediction features may remain incomplete.
 

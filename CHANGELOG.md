@@ -35,3 +35,18 @@
 - **tar**: Archive extraction (`tar -xzf`)
 
 
+### [SPRINT 2]
+#### objectives
+1. Create Python scripts (in minifigures_model folder)
+  - Model and dataset creation
+  - Trainer class to train and validate your model
+  - Evaluation function to evaluate a provided model
+  - Add documentation in your README.md
+2. Wrap a pre-trained model in a REST API (in minifigures_api folder)
+  - Update the predict endpoint (class probabilities)
+  - Create data endpoints to list all image tags and fetch a specific image
+3. Visualise predictions in Streamlit (in minifigures_app folder)
+  - Show the predict results from an uploaded or randomly sampled file
+  - Create the marketplace with pagination
+  - Open Product tab from marketplace
+

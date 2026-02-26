@@ -13,6 +13,7 @@ def main():
     st.markdown("---")
     st.markdown("### 👈 Pages")
     st.markdown(" - **🎭 Product**: Upload and view your product")
+    st.markdown(" - **💰 Market**: Go to our marketplace")
 
 
 if __name__ == "__main__":
