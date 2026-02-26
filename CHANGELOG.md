@@ -12,12 +12,12 @@
 ### [SPRINT 1]
 #### objectives
 1. Extend the pyproject.toml file with a Poe the Poet task to pull the provided data
-    ○ Pull and unzip minifigures.tar.gz
-    ○ Pull dataset.json
-    ○ Data should be in the ./data/data folder1
+  - Pull and unzip minifigures.tar.gz
+  - Pull dataset.json
+  - Data should be in the ./data/data folder1
 2. Have a data exploration notebook
-    ○ Manually go over the data first
-    ○ Analyse the data using the FastDup2 library after
+  - Manually go over the data first
+  - Analyse the data using the FastDup2 library after
 
 #### Additional changes made 
 - Added `CHANGELOG.md` file to track project milestones and changes
