@@ -1,7 +1,7 @@
 """Application constants."""
 
 # Host on which the API runs
-HOST = "http://0.0.0.0"
+HOST = "http://localhost"
 
 # Port under which the endpoints are exposed
 PORT = 8000

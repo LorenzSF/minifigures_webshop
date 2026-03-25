@@ -2,9 +2,10 @@
 
 from fastapi import APIRouter
 from fastapi.responses import FileResponse, JSONResponse
-from minifigures_model.constants import get_data_folder
 from pydantic import BaseModel
 from starlette.exceptions import HTTPException
+
+from minifigures_model.constants import get_data_folder
 
 router = APIRouter()
 
