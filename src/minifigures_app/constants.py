@@ -1,10 +1,12 @@
 """Application constants."""
 
+import os
+
 # Host on which the API runs
-HOST = "http://localhost"
+HOST = os.getenv("API_HOST", "http://api")
 
 # Port under which the endpoints are exposed
-PORT = 8000
+PORT = os.getenv("API_PORT", "8000")
 
 # URL in which the API endpoints are residing
 URL = f"{HOST}:{PORT}"

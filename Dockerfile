@@ -81,6 +81,10 @@ USER user
 # Set the working directory.
 WORKDIR /workspaces/minifigures-app/
 
+ENV VIRTUAL_ENV=/workspaces/minifigures-app/.venv
+ENV PATH=$VIRTUAL_ENV/bin:$PATH
+ENV UV_PROJECT_ENVIRONMENT=$VIRTUAL_ENV
+
 # Copy the app source code to the working directory.
 COPY --chown=user:user . .
 

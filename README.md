@@ -22,8 +22,10 @@ At the current stage, the repository already contains the main product foundatio
 - a `minifigures_app` Streamlit application with a home page, product page, and marketplace page
 - notebooks for dataset preparation, custom datasets, and model fine-tuning
 - local dataset assets under `data/`
+- cloud infrastructure provisioning via Terraform for AWS deployment (EC2, ECR, S3, Route53)
+- Docker containerization for application deployment on AWS EC2
 
-In practice, this means the repository already supports a provisional product flow with a frontend, backend, and data assets, while the final trained-model pipeline is still part of the remaining implementation work.
+In practice, this means the repository already supports a complete product flow from local development to cloud deployment: frontend, backend, data assets, and infrastructure-as-code for production readiness.
 
 ## Current Structure
 
@@ -34,8 +36,9 @@ The main folders are:
 - `src/minifigures_app/`: provisional customer-facing web interface built with Streamlit
 - `data/`: dataset files, split files, notebooks, and local product assets
 - `tests/`: import and API tests
-- `terraform/`: infrastructure code for later deployment stages
-- `shared-resources/`: course-provided supporting material
+- `infrastructure/terraform/`: Infrastructure as Code for AWS cloud deployment
+  - `modules/student-stack/`: Terraform module for EC2, ECR, S3, and Route53 provisioning
+- `shared-resources/`: course-provided supporting material with shared Terraform modules
 
 ## Environment And Commands
 

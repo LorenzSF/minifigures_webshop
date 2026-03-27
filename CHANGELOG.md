@@ -50,3 +50,36 @@
   - Create the marketplace with pagination
   - Open Product tab from marketplace
 
+
+### [SPRINT 4]
+#### objectives
+1. Provision cloud infrastructure via Terraform (infrastructure/terraform/modules/student-stack)
+  - EC2 instance for application hosting
+  - ECR repository for Docker image storage
+  - S3 bucket for model and data artifacts
+  - Route53 DNS configuration
+2. Build and push application Docker image to ECR
+  - Docker image with Python dependencies (gunicorn, streamlit, fastapi, etc.)
+  - Environment variable support for API configuration
+  - PYTHONPATH configuration for module discovery
+3. Deploy application on EC2 via Docker containers
+  - FastAPI backend service (port 8000)
+  - Streamlit frontend service (port 80)
+  - Services connected via Docker network (kulroai-net)
+  - Application accessible via public IP and domain
+
+#### Additional changes made
+- Updated `src/minifigures_app/constants.py` to support environment-based configuration
+- Added deployment automation notebook (`infrastructure/deployment_notebook.ipynb`)
+- Configured environment variables: `API_HOST`, `API_PORT`, `PYTHONPATH`
+
+#### Additional Notes
+- **Terraform**: Infrastructure as Code using student-stack module from shared-resources
+  - Prerequisites: AWS credentials configured, EC2 key pair created
+  - Deployment: `terraform init`, `terraform plan`, `terraform apply`
+- **Docker**: Container orchestration on EC2
+  - Build: `docker build --no-cache -t <ECR_URL>:latest .`
+  - Push: `docker push <ECR_URL>:latest`
+  - Deploy: Docker containers with network connectivity and volume mounts
+- **AWS Services**: EC2 (compute), ECR (registry), S3 (storage), Route53 (DNS)
+
