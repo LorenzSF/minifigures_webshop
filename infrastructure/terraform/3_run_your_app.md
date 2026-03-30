@@ -85,11 +85,15 @@ At this point, you are connected to your EC2 instance. You can now run your appl
 
 ## Run your Docker image on your EC2 instance.
 
-Now your image is available in your ECR repository and your dependencies are available in your S3 bucket,
-you can run your application on your EC2 instance. To do so, you need to pull your image from your ECR
-registry and run it appropriately depending on your implementation. You will also need to pull your 
-dependencies from S3. Those can be pass to your application Docker container by using volume mount. 
-To do so, you can inspire yourself from the following example commands:
+Now your image is available in your ECR repository and your dependencies are available in S3,
+you can run your application on your EC2 instance. In this project, the deployed API needs both:
+
+* the minifigures dataset under `data/data/minifigures`
+* the trained model artifacts under `data/models/my_model`
+
+The Docker image intentionally does not embed `data/`, so the EC2 host must prepare a persistent runtime
+folder and mount it into the API container. To do so, you can inspire yourself from the following example
+commands:
 
 ```bash
 # On your EC2 instance
@@ -97,30 +101,51 @@ sudo su
 aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 516454187396.dkr.ecr.eu-west-3.amazonaws.com
 docker pull 516454187396.dkr.ecr.eu-west-3.amazonaws.com/testuser:latest
 
-# Pull your dependencies from S3
-aws s3 cp s3://<your-S3-bucket-name>/models ./models --recursive
+# Prepare a persistent runtime folder
+mkdir -p /root/minifigures-runtime/data /root/minifigures-runtime/models
+
+# Download the public dataset if it is not already present
+if [ ! -d /root/minifigures-runtime/data/minifigures ] || \
+   [ -z "$(find /root/minifigures-runtime/data/minifigures -maxdepth 1 -name '*.png' -print -quit 2>/dev/null)" ]; then
+  curl -fL https://roai-data-readonly.s3.eu-central-1.amazonaws.com/minifigures.tar.gz \
+    -o /root/minifigures-runtime/data/minifigures.tar.gz
+  tar -xzf /root/minifigures-runtime/data/minifigures.tar.gz -C /root/minifigures-runtime/data
+  rm -f /root/minifigures-runtime/data/minifigures.tar.gz
+fi
+curl -fL https://roai-data-readonly.s3.eu-central-1.amazonaws.com/dataset.json \
+  -o /root/minifigures-runtime/data/dataset.json
+
+# Pull your trained model from S3
+aws s3 cp s3://<your-S3-bucket-name>/models/my_model /root/minifigures-runtime/models/my_model --recursive
 
 # Create a Docker network for your containers to be able to communicate
-docker network create kulroai-net
+docker network create kulroai-net 2>/dev/null || true
 
-# Run the API (and mount the models folder as a volume in the /app/data/models folder of the image)
+# Stop any previous deployment
+docker stop api app 2>/dev/null || true
+docker rm api app 2>/dev/null || true
+
+# Run the API and mount the runtime folder at /workspaces/minifigures-app/data
 docker run \
 -d \
 --rm \
 --network kulroai-net \
 --name api \
--v $(pwd)/models:/app/data/models \
+-v /root/minifigures-runtime:/workspaces/minifigures-app/data \
 -p 8000:8000 \
+-e PYTHONPATH=/workspaces/minifigures-app/src:$PYTHONPATH \
 516454187396.dkr.ecr.eu-west-3.amazonaws.com/testuser:latest \
 api
 
-# Run the Streamlit app 
+# Run the Streamlit app
 docker run \
 -d \
 --rm \
 --network kulroai-net \
 --name app \
 -p 80:8500 \
+-e API_HOST=http://api \
+-e API_PORT=8000 \
 516454187396.dkr.ecr.eu-west-3.amazonaws.com/testuser:latest \
 app
 ```
@@ -135,8 +160,12 @@ A few notes about the commands above and the EC2 environment:
 
 * The usage of the Docker network `kulroai-net` allows your containers to communicate with each other. This way,
   knowing that your API container is named `api` and exposed on port `8000`, you can reach it from your Streamlit
-  container named `app` under the URL `http://api:8080`. The same applies from `api` to `app` and any other container
+  container named `app` under the URL `http://api:8000`. The same applies from `api` to `app` and any other container
   that would be running in the Docker network.
+
+* If prediction requests return `404` while the site loads, the most common cause is a missing
+  `/root/minifigures-runtime/models/my_model` folder on the EC2 host. Re-sync the model artifacts from S3
+  and retry the request.
 
 Once done, you can head to your domain name (here `testuser.realization-of-ai.com`) and you should see
 your application running live! Congratulations, you just deployed your application in the Cloud! 🎉

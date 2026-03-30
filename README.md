@@ -73,7 +73,9 @@ Terminal 2:
 uv run poe app --host 0.0.0.0 --port 8500
 ```
 
-Then open the forwarded port for `8500` in the VS Code port viewer or integrated browser. The backend API documentation is available on port `8000`.
+No additional `API_HOST` configuration is required for local runs. By default, the app connects to the FastAPI backend at `http://localhost:8000`.
+
+Then open the forwarded port for `8500` in the VS Code port viewer or integrated browser. The backend API documentation is available at `http://localhost:8000/docs`.
 
 ## Current Limitation
 
