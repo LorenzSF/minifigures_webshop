@@ -38,12 +38,7 @@ def main():
 
                 col.write(image_tag)
                 col.image(_rescale_image(image, resolution=200))
-                col.button(
-                    "View",
-                    key=image_tag,
-                    on_click=_open_product,
-                    args=(image_tag,),
-                )
+                col.button("View", key=image_tag, on_click=_open_product, args=(image_tag,))
             except Exception:
                 continue
 

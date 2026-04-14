@@ -41,9 +41,7 @@ def predict_image(image: Image.Image) -> dict[str, float]:
 def list_im_tags() -> list[str]:
     """Get all image tags in index file."""
     try:
-        response = requests.get(
-            url=f"{URL}/data/get_image_tags/", timeout=REQUEST_TIMEOUT_SECONDS
-        )
+        response = requests.get(url=f"{URL}/data/get_image_tags/", timeout=REQUEST_TIMEOUT_SECONDS)
         response.raise_for_status()
         payload = response.json()
     except RequestException as exc:
@@ -60,9 +58,7 @@ def get_image(tag: str) -> Image.Image:
     """Get an image from the database."""
     try:
         response = requests.get(
-            url=f"{URL}/data/get_image/",
-            params={"tag": tag},
-            timeout=REQUEST_TIMEOUT_SECONDS,
+            url=f"{URL}/data/get_image/", params={"tag": tag}, timeout=REQUEST_TIMEOUT_SECONDS
         )
         response.raise_for_status()
         with Image.open(io.BytesIO(response.content)) as image:

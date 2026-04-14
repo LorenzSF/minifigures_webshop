@@ -45,8 +45,5 @@ def test_predict_returns_404_when_model_is_missing(monkeypatch) -> None:
     image.save(buffer, format="PNG")
     payload = buffer.getvalue()
 
-    response = client.post(
-        "/predict/image/",
-        files={"file": ("sample.png", payload, "image/png")},
-    )
+    response = client.post("/predict/image/", files={"file": ("sample.png", payload, "image/png")})
     assert response.status_code == 404
