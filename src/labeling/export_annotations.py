@@ -27,21 +27,17 @@ def export_label_studio_annotations_to_simple_json(source_dir: Path, destination
             dataset[image_tag] = labels
 
     # Save dataset
-    file_name = "dataset_labeled"
+    file_name = f"dataset_labeled_{datetime.now().strftime('%Y%m%dT%H%M%S')}"  # noqa: DTZ005
     dest_path = destination_dir / f"{file_name}.json"
-    # If file already exists, add timestamp to filename
-    if dest_path.exists():
-        file_name = f"{file_name}_{datetime.now().strftime('%Y%m%dT%H%M%S')}"  # noqa: DTZ005
-        dest_path = destination_dir / f"{file_name}.json"
 
     with open(dest_path, "w") as f:
         json.dump(dataset, f, indent=4)
 
 
 if __name__ == "__main__":
-    label_studio_annotations_dir: Path = (
-        ...
-    )  # e.g. Path("/workspaces/data/data/target_annotations")
-    save_dir: Path = ...  # e.g. Path("/workspaces/data/data/")
+    label_studio_annotations_dir: Path = Path(
+        "/workspaces/updated-minifigures-webshop-2026-LorenzSF/data/data/target_annotations"
+    )
+    save_dir: Path = Path("/workspaces/updated-minifigures-webshop-2026-LorenzSF/data/data")
 
     export_label_studio_annotations_to_simple_json(label_studio_annotations_dir, save_dir)
