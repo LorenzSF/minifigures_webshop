@@ -9,7 +9,7 @@ from torch import nn
 from torchvision import models
 
 from minifigures_model.constants import get_models_folder
-from minifigures_model.utils import pil_to_torch, resize
+from minifigures_model.preprocessing import preprocess_pil_image
 
 
 class EncoderDecoder(nn.Module):
@@ -52,18 +52,13 @@ class EncoderDecoder(nn.Module):
 
     def predict(self, x: Image) -> dict[str, float]:
         """Make a prediction for the provided Image."""
-        # Reshape into required format
-        x_t = pil_to_torch(x)
-        x_t = resize(x_t, resolution=self.resolution)
-
-        # Put in eval mode
         self.eval()
 
-        # Add batch dimension and feed to the model, convert to probabilities
-        logits = self.forward(x_t[None,])[0]
-        probs = torch.sigmoid(logits).detach().numpy()
+        with torch.inference_mode():
+            x_t = preprocess_pil_image(x, resolution=self.resolution)
+            logits = self.forward(x_t[None,])[0]
+            probs = torch.sigmoid(logits).detach().cpu().tolist()
 
-        # Transform into probabilistic predictions
         return {k: float(v) for k, v in zip(self.classes, probs)}
 
     def forward(self, x):

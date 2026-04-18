@@ -1,18 +1,14 @@
-"""Merge the base dataset with the latest exported Label Studio dataset."""
+"""Merge the base dataset with the exported Label Studio dataset."""
 
-import json
 from pathlib import Path
 
-DATA_DIR = Path("/workspaces/updated-minifigures-webshop-2026-LorenzSF/data/data")
-OUTPUT_PATH = DATA_DIR / "dataset_merged_labeled.json"
-
-
-def get_latest_dataset_labeled_path(data_dir: Path = DATA_DIR) -> Path:
-    """Return the latest exported dataset_labeled json."""
-    candidates = sorted(data_dir.glob("dataset_labeled*.json"))
-    if not candidates:
-        raise FileNotFoundError("No dataset_labeled*.json files found.")
-    return candidates[-1]
+from minifigures_model.data_utils import (
+    BASE_DATASET_PATH,
+    LABELED_DATASET_PATH,
+    MERGED_DATASET_PATH,
+    load_dataset,
+    save_dataset,
+)
 
 
 def merge_datasets(reference_path: Path, candidate_path: Path, output_path: Path) -> None:
@@ -21,22 +17,19 @@ def merge_datasets(reference_path: Path, candidate_path: Path, output_path: Path
     Existing labels in the reference dataset are preserved.
     Only new tags from the candidate dataset are added.
     """
-    with open(reference_path) as f:
-        reference = json.load(f)
-
-    with open(candidate_path) as f:
-        candidate = json.load(f)
+    reference = load_dataset(reference_path)
+    candidate = load_dataset(candidate_path)
 
     merged = dict(reference)
     added_count = 0
 
+    # Add only new tags from the exported dataset.
     for tag, labels in candidate.items():
         if tag not in merged:
             merged[tag] = labels
             added_count += 1
 
-    with open(output_path, "w") as f:
-        json.dump(merged, f, indent=4)
+    save_dataset(merged, output_path)
 
     print(f"reference_path: {reference_path}")
     print(f"candidate_path: {candidate_path}")
@@ -48,9 +41,8 @@ def merge_datasets(reference_path: Path, candidate_path: Path, output_path: Path
 
 
 if __name__ == "__main__":
-    latest_candidate_path = get_latest_dataset_labeled_path()
     merge_datasets(
-        reference_path=DATA_DIR / "dataset.json",
-        candidate_path=latest_candidate_path,
-        output_path=OUTPUT_PATH,
+        reference_path=BASE_DATASET_PATH,
+        candidate_path=LABELED_DATASET_PATH,
+        output_path=MERGED_DATASET_PATH,
     )

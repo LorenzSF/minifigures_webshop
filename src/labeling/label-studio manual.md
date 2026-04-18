@@ -1,68 +1,229 @@
-# Label-studio manual
+## Label Studio And Active Learning Workflow
 
-## Important remarks
+This workflow uses Label Studio for manual annotation and the repo scripts for:
 
-* Viewing the label-studio server in the browser only works properly from the online vscode IDE (not from the local vscode that is connected to the codespace)!
-* The label-studio UI can often hang or be unresponsive: try refreshing the page, or rebooting the server (ctrl+C and start again)
-* Managing your train/val split is up to you. Label-studio (as far as we use it) only outputs labeled/unlabeled samples.
-* Each time you run the label-studio server from the terminal, make sure the appropriate environment variables are set as explained in step 1 [here](#initial-setup).
+- exporting labels
+- merging labels into the working dataset
+- preparing train/val splits
+- fine-tuning the model
+- ranking unlabeled tasks with active learning
+- uploading selected model predictions for review
 
-## Workflow
-### Initial setup
-1. Tell label-studio it is ok to use local files and point to our root dir by setting some env vars in the terminal where we will run label-studio:
-```sh
+## 1. Start Label Studio
+
+From the repository root:
+
+```bash
+export PYTHONPATH=src
 export LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED=true
 export LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/workspaces
+label-studio
 ```
-2. Start up the label-studio server from the terminal: label-studio
-3. Sign up for an account and login (email not verified, only for local purposes, we don’t need user functionality, make sure to uncheck the box to not get emails)
-4. A new tab should automatically pop open with the label-studio UI
-5. Create project:
-    1. Enter a project name
-    2. Press save upper right corner
-    3. Go back to the main page
-    4. Set the labeling interface:
-        1. Click the 3 dots on the upper right corner of the project tab > settings > Labeling interface
-        2. Copy the content from the file labeling/project_config.xml on the codespace and paste it here. Press save.
-    5. Connect our image data to label-studio:
-        1. Still under settings, go to Cloud Storage in the left sidebar (Yes, the local files are under cloud storage 🙃)
-        2. Click ‘Add source storage’
-        3. Select ‘Local files’ under ‘Storage Type’
-        4. Choose a Storage Title e.g. Image dataset
-        5. Specify the directory where your images are located, make sure this is an absolute path (and thus starts with /workspaces/…)
-        6. Set the File Filter Regex to .*png
-        7. Enable the option ‘Treat every bucket object as a source file. This basically tells label-studio that every image corresponds with one labeling task.
-        8. Press save
-        9. Sync our dataset by pressing the button ‘Sync Storage’. Internally label-studio creates ‘tasks’ with metadata for every image. This can take a while. After pressing the ‘Sync Storage’ button, a runtime error may occur. The progress up until that error is not lost, simply press the button again until the status is completed.
-    6. Create a target storage where the annotations will be saved to:
-        1. Still under settings > Cloud Storage, click ‘Add target storage’
-        2. Select ‘Local files’ under ‘Storage Type’
-        3. Choose a Storage Title e.g. label-studio annotations
-        4. Specify an empty directory (make sure it exists) where your annotations will be saved to, make sure this is an absolute path (and thus starts with /workspaces/…)
 
-## First time labeling
-1. Return to the home page and click on your project.
-2. We want to label at random first, need to set the box in Settings (top right) > General > Task Sampling > Random sampling. Click Save and return to the labeling page.
-3. Click the blue button ‘Label All Tasks’ to start labeling. (Use the keyboard shortcuts to speed up)
+Notes:
 
-## Export to simple json format
-1. After labeling, the annotations are automatically saved to the target storage we set up in the beginning. The following steps export these to a simple json format with as keys the image tags and as values a list of image classes.
-2. In the vscode editor, go to labeling > export_annotations.py
-3. In the section `if __name__ == "__main__":`: set the correct values for the variables (dir that points to the label-studio annotations and dir that points to where dataset.json will be saved to)
-4. Run the file.
+- Use the browser inside the online VS Code / codespace. The local VS Code browser integration often fails.
+- If the UI hangs, refresh the page or restart the server.
+- Set the two `LABEL_STUDIO_*` variables every time you start the server.
 
-## Active learning: adding k nearest neighbors of highest loss train samples
-The k nearest neighbors from the trainset are searched in the unlabeled dataset. The prediction score field in label-studio for those nearest neighbors is then populated with the value of the loss for the corresponding trainset sample. By ordering the samples in label-studio on prediction score (loss), we can label the most useful images first.
+## 2. Create The Project And Storages
 
-1. Make sure the label-studio server is running (in a terminal session where the two required env vars are set).
-2. Go to the file labeling > active_learning.py
-3. Complete the functions `get_embeddings()`, `get_loss_trainset()`, `get_tags_labeled()`
-4. In the section `if __name__ == "__main__":`: set the correct values for the variables:
-    1. Model_version: pick a string of your choosing (e.g. model_v1)
-    2. Token: go to the label-studio UI > Account & Settings (top right on the user circle) > Access Token > Press the button ‘Copy’ under the long string
-    3. Project_id: go to the label-studio UI, click on your project, checkout the number after …/projects/ in the URL.
-5. Run the file.
-6. In order to view the correct prediction scores in the label-studio UI, we have to select the right model_version: Settings > Machine Learning > Model Version and select the appropriate one from the list. Click ‘Save’.
-7. Return to the overview of annotation tasks inside your project.
-8. Order by Prediction score and make sure the direction is correct (from highest to lowest if you minimize the loss). (Make sure you view the prediction score on screen by pressing the ‘Columns’ button and selecting prediction score)
-9. Instead of pressing the blue button ‘Label All Tasks’, press the arrow on the blue button and press ‘Label Tasks As Displayed’.
+In Label Studio:
+
+1. Create a new project.
+2. Paste `src/labeling/project_config.xml` into the labeling interface.
+3. Add a source storage:
+   `data/data/minifigures`
+4. Set the file filter regex:
+   `^(?!\._).*\.png$`
+5. Enable the option that treats each file as one task.
+6. Sync the storage.
+7. Add a target storage:
+   `data/data/target_annotations`
+
+Notes:
+
+- If sync raises a runtime error, run sync again. Partial progress is usually kept.
+- Label Studio only manages labeled vs unlabeled tasks. Train/val splitting is handled by the repo scripts.
+
+## 3. First Labeling Round
+
+For the first round, use random sampling:
+
+1. Open `Settings > General > Task Sampling`
+2. Select `Random sampling`
+3. Save
+4. Start labeling
+
+## 4. Export And Merge Labels
+
+After each labeling round, from the repository root:
+
+```bash
+export PYTHONPATH=src
+python src/labeling/export_annotations.py
+python src/labeling/compare_annotations.py
+python src/labeling/merge_annotations.py
+```
+
+Files used now:
+
+- `data/data/dataset_labeled.json`
+- `data/data/dataset_merged_labeled.json`
+
+Behavior:
+
+- `export_annotations.py` overwrites `dataset_labeled.json`
+- `compare_annotations.py` compares `dataset.json` vs `dataset_labeled.json`
+- `merge_annotations.py` merges new tags into `dataset_merged_labeled.json`
+
+## 5. Prepare The Seed Split
+
+From the repository root:
+
+```bash
+export PYTHONPATH=src
+python -m minifigures_model.model_finetune prepare-seed-split --seed-size 300
+```
+
+This writes:
+
+- `data/data/datasets/seed_300.json`
+- `data/data/datasets/train_seed_300.json`
+- `data/data/datasets/val_seed_300.json`
+
+## 6. Fine-Tune The Model
+
+Example:
+
+```bash
+export PYTHONPATH=src
+python -m minifigures_model.model_finetune train-seed-model \
+  --base-model-tag my_model_active_learning_v5 \
+  --output-model-tag my_model_active_learning_v6 \
+  --epochs 10
+```
+
+Notes:
+
+- The command automatically picks the latest `train_seed_*.json` and `val_seed_*.json`
+- For the first run, `--base-model-tag my_model` is a valid starting point
+- The best checkpoint is saved under `data/models/<output-model-tag>/`
+
+## 7. Run Active Learning
+
+This script only does `loss + KNN` ranking for unlabeled tasks.
+
+Example:
+
+```bash
+export PYTHONPATH=src
+python src/labeling/active_learning.py \
+  --model-version active_seed500_v1 \
+  --token YOUR_LABEL_STUDIO_TOKEN \
+  --project-id 1 \
+  --model-tag my_model_active_learning_v6 \
+  --budget 100 \
+  --k 5
+```
+
+Notes:
+
+- `--budget` controls how many unlabeled tasks receive a score
+- `--k` controls how many nearest neighbors are considered per difficult train sample
+- The script automatically uses the latest `train_seed_*.json` unless you pass `--train-dataset-path`
+
+## 8. Review The Prioritized Tasks In Label Studio
+
+After uploading active learning scores:
+
+1. Open `Settings > Machine Learning`
+2. Select the `Model Version` used in the command
+3. Enable the `Prediction score` column
+4. Sort by `Prediction score`
+5. Use `Label Tasks As Displayed`
+
+## 9. Export Predictions For Review
+
+If you want to review model predictions directly, first export them:
+
+```bash
+export PYTHONPATH=src
+python src/labeling/export_predictions.py \
+  --model-tag my_model_active_learning_v6
+```
+
+This overwrites:
+
+- `data/data/predictions/all_predictions.json`
+
+You can also choose another output path:
+
+```bash
+export PYTHONPATH=src
+python src/labeling/export_predictions.py \
+  --model-tag my_model_active_learning_v6 \
+  --output-path data/data/predictions/review_humans.json
+```
+
+## 10. Upload Predictions To Label Studio
+
+### Single-class example
+
+Review only `human` predictions:
+
+```bash
+export PYTHONPATH=src
+python src/labeling/upload_predictions.py \
+  --model-version human_v1 \
+  --token YOUR_LABEL_STUDIO_TOKEN \
+  --project-id 1 \
+  --predictions-path data/data/predictions/all_predictions.json \
+  --show-classes human \
+  --score-classes human \
+  --class-threshold human=0.7
+```
+
+### Multi-option example
+
+Review several classes with different thresholds:
+
+```bash
+export PYTHONPATH=src
+python src/labeling/upload_predictions.py \
+  --model-version review_features_v1 \
+  --token YOUR_LABEL_STUDIO_TOKEN \
+  --project-id 1 \
+  --predictions-path data/data/predictions/all_predictions.json \
+  --show-classes human helmet cape \
+  --score-classes human helmet \
+  --class-threshold human=0.7 \
+  --class-threshold helmet=0.8 \
+  --class-threshold cape=0.6
+```
+
+Meaning:
+
+- `--show-classes` decides which classes appear as suggested choices
+- `--score-classes` decides which classes contribute to the final prediction score
+- `--class-threshold class=value` can be repeated
+- `alien`, `human`, and `robot` are treated as an argmax group by default
+- tasks with no visible classes and score `0` are skipped
+
+After upload:
+
+1. Open `Settings > Machine Learning`
+2. Select the uploaded `Model Version`
+3. Enable the `Prediction score` column
+4. Sort by `Prediction score` if needed
+
+## 11. Repeat The Loop
+
+Typical iteration:
+
+1. Label tasks in Label Studio
+2. Export and merge labels
+3. Prepare a new seed split if needed
+4. Fine-tune a new model
+5. Run active learning again
+6. Optionally export and upload predictions for review

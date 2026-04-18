@@ -3,110 +3,31 @@
 from __future__ import annotations
 
 import argparse
-import json
 import random
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 import torch
-import torch.nn.functional as F
 from PIL import Image
 from skmultilearn.model_selection import iterative_train_test_split
 from torch import nn
 from torch.utils.data import DataLoader, Dataset
-from torchvision import transforms
 
+from minifigures_model.data_utils import (
+    DATASETS_DIR,
+    IMAGES_DIR,
+    MERGED_DATASET_PATH,
+    get_classes,
+    get_latest_dataset_path,
+    load_dataset,
+    save_dataset,
+)
 from minifigures_model.model import EncoderDecoder
+from minifigures_model.preprocessing import preprocess_pil_image
 
-DATA_DIR = Path("/workspaces/updated-minifigures-webshop-2026-LorenzSF/data/data")
-IMAGES_DIR = DATA_DIR / "minifigures"
-MERGED_DATASET_PATH = DATA_DIR / "dataset_merged_labeled.json"
-DATASETS_DIR = DATA_DIR / "datasets"
 DEFAULT_BASE_MODEL_TAG = "my_model"
 DEFAULT_OUTPUT_MODEL_TAG = "my_model_active_learning"
-
-
-def load_dataset(path: Path) -> dict[str, list[str]]:
-    """Load a JSON dataset file."""
-    with open(path) as f:
-        return json.load(f)
-
-
-def save_dataset(dataset: dict[str, list[str]], path: Path) -> None:
-    """Save a JSON dataset file."""
-    with open(path, "w") as f:
-        json.dump(dataset, f, indent=4, sort_keys=True)
-
-
-def get_latest_dataset_path(pattern: str, data_dir: Path = DATASETS_DIR) -> Path:
-    """Return the newest dataset split matching the provided glob pattern."""
-    candidates = sorted(data_dir.glob(pattern), key=lambda path: path.stat().st_mtime, reverse=True)
-    if not candidates:
-        msg = f"No dataset files found for pattern: {pattern}"
-        raise FileNotFoundError(msg)
-    return candidates[0]
-
-
-def get_classes(dataset: dict[str, list[str]]) -> list[str]:
-    """Infer the sorted class list from a dataset mapping."""
-    return sorted({label for labels in dataset.values() for label in labels})
-
-
-def to_tensor(x: torch.Tensor | np.ndarray | Image.Image) -> torch.Tensor:
-    """Convert supported inputs into a tensor."""
-    if isinstance(x, torch.Tensor):
-        return x
-    if isinstance(x, np.ndarray):
-        return torch.Tensor(x)
-    if isinstance(x, Image.Image):
-        return torch.Tensor(np.array(x))
-    msg = f"Variable of type '{type(x)}' not supported!"
-    raise TypeError(msg)
-
-
-def load_img(path: Path) -> torch.Tensor:
-    """Load an image into a channel-first float tensor."""
-    image = Image.open(path).convert("RGB")
-    image = to_tensor(image)
-    return image.permute(2, 0, 1) / 255.0
-
-
-class SquarePad:
-    """Pad a channel-first image tensor to a square."""
-
-    def __call__(self, x: torch.Tensor) -> torch.Tensor:
-        """Pad the provided image to become a square."""
-        _, _, h, w = x.shape
-        max_wh = max(w, h)
-        p_left, p_right = ((max_wh - w) // 2 for _ in range(2))
-        p_right += int(w % 2 == 1)
-        p_bottom, p_top = ((max_wh - h) // 2 for _ in range(2))
-        p_top += int(h % 2 == 1)
-        padding = (p_left, p_right, p_top, p_bottom)
-        return F.pad(x, padding, value=1, mode="constant")
-
-
-def get_transform_resize(resolution: int) -> transforms.Compose:
-    """Generate the resizing transform from the notebook."""
-    return transforms.Compose([SquarePad(), transforms.Resize((resolution, resolution))])
-
-
-def get_transform_normalize() -> transforms.Compose:
-    """Generate the normalization transform from the notebook."""
-    return transforms.Compose([transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
-
-
-def preprocess_image_tensor(image: torch.Tensor, resolution: int = 256) -> torch.Tensor:
-    """Apply notebook-style resize and normalization to an image tensor."""
-    image = get_transform_resize(resolution)(image[None,])[0]
-    return get_transform_normalize()(image)
-
-
-def preprocess_pil_image(image: Image.Image, resolution: int = 256) -> torch.Tensor:
-    """Apply notebook-style preprocessing to a PIL image."""
-    image_t = to_tensor(image.convert("RGB")).permute(2, 0, 1) / 255.0
-    return preprocess_image_tensor(image_t, resolution=resolution)
 
 
 def _binarize_labels(
@@ -179,30 +100,29 @@ def create_seed_splits(
 class MinifiguresDataset(Dataset):
     """Notebook-style custom dataset."""
 
-    def __init__(self, data_f: Path, dataset: dict[str, list[str]], resolution: int = 256) -> None:
+    def __init__(
+        self, data_f: Path, dataset: dict[str, list[str]], classes: list[str], resolution: int = 256
+    ) -> None:
         self.data_f = data_f
-        self.keys, self.labels = zip(*dataset.items())
-        self.classes = sorted({label for labels in self.labels for label in labels})
-        self.transform_resize = get_transform_resize(resolution)
-        self.transform_normalize = get_transform_normalize()
+        self.keys = list(dataset)
+        self.labels = [dataset[tag] for tag in self.keys]
+        self.classes = list(classes)
+        self.resolution = resolution
+        unknown_labels = sorted(
+            {label for labels in self.labels for label in labels} - set(self.classes)
+        )
+        if unknown_labels:
+            raise ValueError(f"Unknown labels for dataset: {unknown_labels}")
 
     def __len__(self) -> int:
         return len(self.keys)
 
     def __getitem__(self, idx: int) -> dict[str, Any]:
-        image = load_img(self.data_f / f"{self.keys[idx]}.png")
-        image = self.transform_resize(image[None,])[0]
-        image = self.transform_normalize(image)
-        label = torch.FloatTensor([item in self.labels[idx] for item in self.classes])
-        return {"image": image, "label": label, "tag": self.keys[idx]}
-
-
-def make_dataloader(
-    dataset_path: Path, batch_size: int = 8, shuffle: bool = False, drop_last: bool = False
-) -> DataLoader:
-    """Create a notebook-style DataLoader for a JSON split."""
-    dataset = MinifiguresDataset(data_f=IMAGES_DIR, dataset=load_dataset(dataset_path))
-    return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, drop_last=drop_last)
+        with Image.open(self.data_f / f"{self.keys[idx]}.png") as image:
+            image_t = preprocess_pil_image(image, resolution=self.resolution)
+        labels = set(self.labels[idx])
+        label = torch.tensor([item in labels for item in self.classes], dtype=torch.float32)
+        return {"image": image_t, "label": label, "tag": self.keys[idx]}
 
 
 def metric_precision(pred: torch.Tensor, target: torch.Tensor) -> float:
@@ -298,15 +218,18 @@ def finetune_model(
     train_dataset = load_dataset(train_dataset_path)
     val_dataset = load_dataset(val_dataset_path)
 
-    dataset_train = MinifiguresDataset(data_f=IMAGES_DIR, dataset=train_dataset)
-    dataset_val = MinifiguresDataset(data_f=IMAGES_DIR, dataset=val_dataset)
-    assert dataset_train.classes == dataset_val.classes
+    model = EncoderDecoder.load(base_model_tag)
+    model.tag = output_model_tag
+
+    dataset_train = MinifiguresDataset(
+        data_f=IMAGES_DIR, dataset=train_dataset, classes=model.classes, resolution=model.resolution
+    )
+    dataset_val = MinifiguresDataset(
+        data_f=IMAGES_DIR, dataset=val_dataset, classes=model.classes, resolution=model.resolution
+    )
 
     loader_train = DataLoader(dataset_train, batch_size=batch_size, shuffle=True, drop_last=True)
     loader_val = DataLoader(dataset_val, batch_size=batch_size, shuffle=False)
-
-    model = EncoderDecoder.load(base_model_tag)
-    model.tag = output_model_tag
 
     loss_fn = nn.BCEWithLogitsLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)

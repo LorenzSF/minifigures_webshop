@@ -1,27 +1,19 @@
-"""Compare existing dataset labels with the latest exported Label Studio dataset."""
+"""Compare existing dataset labels with the exported Label Studio dataset."""
 
-import json
 from pathlib import Path
 
-DATA_DIR = Path("/workspaces/updated-minifigures-webshop-2026-LorenzSF/data/data")
-IMAGES_DIR = DATA_DIR / "minifigures"
-
-
-def get_latest_dataset_labeled_path(data_dir: Path = DATA_DIR) -> Path:
-    """Return the latest exported dataset_labeled json."""
-    candidates = sorted(data_dir.glob("dataset_labeled*.json"))
-    if not candidates:
-        raise FileNotFoundError("No dataset_labeled*.json files found.")
-    return candidates[-1]
+from minifigures_model.data_utils import (
+    BASE_DATASET_PATH,
+    IMAGES_DIR,
+    LABELED_DATASET_PATH,
+    load_dataset,
+)
 
 
 def compare_datasets(reference_path: Path, candidate_path: Path) -> None:
     """Print overlap and label differences between two datasets."""
-    with open(reference_path) as f:
-        reference = json.load(f)
-
-    with open(candidate_path) as f:
-        candidate = json.load(f)
+    reference = load_dataset(reference_path)
+    candidate = load_dataset(candidate_path)
 
     reference_keys = set(reference)
     candidate_keys = set(candidate)
@@ -60,8 +52,8 @@ def compare_datasets(reference_path: Path, candidate_path: Path) -> None:
 
 
 if __name__ == "__main__":
-    latest_candidate_path = get_latest_dataset_labeled_path()
-    reference_path = DATA_DIR / "dataset.json"
+    reference_path = BASE_DATASET_PATH
+    latest_candidate_path = LABELED_DATASET_PATH
     print(f"reference_path: {reference_path}")
     print(f"latest_candidate: {latest_candidate_path}")
     print()

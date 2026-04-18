@@ -646,7 +646,6 @@
     ],
     "sc089": [
         "human",
-        "glasses",
         "helmet",
         "happy"
     ],
@@ -778,23 +777,23 @@
     ],
     "njo393": [
         "human",
-        "helmet",
+        "hat",
         "angry"
     ],
     "njo616": [
         "human",
-        "helmet",
+        "hat",
         "angry",
         "happy"
     ],
     "njo670": [
         "human",
-        "helmet",
+        "hat",
         "angry"
     ],
     "njo749": [
         "human",
-        "helmet",
+        "hat",
         "angry"
     ],
     "sw0036b": [
@@ -983,7 +982,6 @@
     ],
     "85863pb001": [
         "human",
-        "helmet",
         "angry",
         "facial hair"
     ],
@@ -1003,6 +1001,7 @@
     ],
     "85863pb008": [
         "human",
+        "hat",
         "happy",
         "facial hair"
     ],
@@ -1070,7 +1069,6 @@
     ],
     "njo081": [
         "alien",
-        "cape",
         "hat",
         "angry"
     ],
@@ -1518,7 +1516,7 @@
     ],
     "mk081": [
         "robot",
-        "helmet",
+        "hat",
         "angry"
     ],
     "cas113a": [
@@ -1800,31 +1798,375 @@
         "helmet",
         "angry"
     ],
+    "sw0595": [
+        "human",
+        "cape",
+        "hat",
+        "angry"
+    ],
+    "sw0634": [
+        "human",
+        "cape",
+        "hat",
+        "angry"
+    ],
+    "arc006": [
+        "human",
+        "glasses",
+        "hat"
+    ],
+    "arc013": [
+        "human",
+        "glasses",
+        "hat"
+    ],
+    "colmar09": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "cty1277": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "twn125": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "nex044": [
+        "alien",
+        "angry"
+    ],
+    "njo082": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "njo222": [
+        "alien",
+        "angry"
+    ],
     "njo210": [
         "human",
+        "hat"
+    ],
+    "njo229": [
+        "human",
         "helmet"
+    ],
+    "njo480": [
+        "human",
+        "hat"
+    ],
+    "pln010": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "pln075": [
+        "human",
+        "happy"
+    ],
+    "pln077": [
+        "human",
+        "happy"
+    ],
+    "twn083": [
+        "human",
+        "happy"
+    ],
+    "twn095": [
+        "human",
+        "happy"
+    ],
+    "cty1432": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "loc029": [
+        "alien"
+    ],
+    "njo084": [
+        "robot",
+        "angry"
     ],
     "cty1041": [
         "human",
         "happy"
+    ],
+    "sc100": [
+        "human",
+        "helmet",
+        "happy",
+        "facial hair"
+    ],
+    "sw0808": [
+        "alien",
+        "angry"
+    ],
+    "lor049": [
+        "human",
+        "angry",
+        "happy",
+        "facial hair"
+    ],
+    "sh219": [
+        "human",
+        "cape",
+        "angry"
+    ],
+    "sh220": [
+        "human",
+        "cape",
+        "angry"
+    ],
+    "sh645": [
+        "human",
+        "cape",
+        "angry",
+        "facial hair"
+    ],
+    "atl002": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "dim004": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "jw080": [
+        "human",
+        "angry"
+    ],
+    "sh049": [
+        "alien",
+        "helmet",
+        "angry"
     ],
     "pi138": [
         "human",
         "hat",
         "happy"
     ],
+    "sw0970": [
+        "human",
+        "facial hair"
+    ],
+    "cty0610": [
+        "human",
+        "hat",
+        "angry",
+        "facial hair"
+    ],
+    "cty0848": [
+        "human",
+        "glasses",
+        "helmet",
+        "happy"
+    ],
+    "cty0877": [
+        "human",
+        "helmet",
+        "angry"
+    ],
+    "cty0945": [
+        "human",
+        "hat",
+        "happy",
+        "facial hair"
+    ],
+    "cty1010": [
+        "human",
+        "glasses",
+        "helmet",
+        "angry"
+    ],
+    "con008": [
+        "human",
+        "helmet",
+        "happy",
+        "facial hair"
+    ],
+    "cty0031": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "cty0113": [
+        "human",
+        "helmet",
+        "happy",
+        "facial hair"
+    ],
+    "cty0125": [
+        "human",
+        "glasses",
+        "helmet",
+        "angry"
+    ],
     "njo355": [
         "human",
+        "happy"
+    ],
+    "cty0158": [
+        "human",
+        "glasses",
+        "hat",
+        "happy",
+        "facial hair"
+    ],
+    "col180": [
+        "human",
+        "helmet",
+        "angry",
+        "facial hair"
+    ],
+    "cty1233": [
+        "human",
+        "glasses",
+        "happy"
+    ],
+    "gs014": [
+        "alien"
+    ],
+    "sh712": [
+        "human",
+        "glasses",
+        "angry"
+    ],
+    "tlr007": [
+        "human"
+    ],
+    "LLP016": [
+        "human",
+        "glasses",
+        "hat",
+        "happy"
+    ],
+    "cty1177": [
+        "human",
+        "hat",
+        "happy",
+        "facial hair"
+    ],
+    "cty1458": [
+        "human",
+        "glasses",
+        "hat",
+        "happy"
+    ],
+    "soc012": [
+        "human",
+        "hat",
         "happy"
     ],
     "shell003": [
         "human",
         "happy"
     ],
+    "twn261": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "cty0602": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "njo186": [
+        "human",
+        "angry"
+    ],
+    "njo212": [
+        "human",
+        "hat"
+    ],
+    "rac054": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "sw1075": [
+        "human",
+        "helmet",
+        "angry"
+    ],
+    "jw030": [
+        "human",
+        "happy"
+    ],
+    "sh235": [
+        "human",
+        "happy"
+    ],
+    "sh272": [
+        "human"
+    ],
+    "sh760": [
+        "human",
+        "angry",
+        "facial hair"
+    ],
     "toy019": [
         "human",
         "cape",
         "happy"
+    ],
+    "st003": [
+        "human"
+    ],
+    "mk104": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "nba018": [
+        "human",
+        "happy",
+        "facial hair"
+    ],
+    "sh276": [
+        "alien",
+        "helmet"
+    ],
+    "sh277": [
+        "human",
+        "hat"
+    ],
+    "coltlbm35": [
+        "human",
+        "cape",
+        "glasses",
+        "hat",
+        "angry"
+    ],
+    "sh132": [
+        "human",
+        "helmet"
+    ],
+    "sh511": [
+        "alien",
+        "cape",
+        "hat",
+        "angry"
+    ],
+    "sh534": [
+        "human",
+        "cape",
+        "helmet",
+        "angry"
+    ],
+    "sh535": [
+        "human",
+        "cape",
+        "helmet",
+        "angry"
     ],
     "sh525": [
         "human",
@@ -1835,14 +2177,151 @@
         "human",
         "happy"
     ],
+    "cas503": [
+        "human",
+        "happy"
+    ],
+    "colhp16": [
+        "human",
+        "glasses",
+        "hat"
+    ],
+    "sh392": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "sw0646": [
+        "human",
+        "helmet"
+    ],
+    "tlm162": [
+        "human",
+        "happy"
+    ],
+    "cas493": [
+        "human",
+        "helmet",
+        "angry"
+    ],
+    "coltlnm05": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "njo006": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "njo015": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "poc042": [
+        "alien",
+        "hat"
+    ],
     "hgh010": [
         "human",
         "helmet",
         "happy"
     ],
+    "sh275": [
+        "alien",
+        "hat"
+    ],
+    "sw0299": [
+        "robot"
+    ],
+    "sw0321": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "sw0597": [
+        "human",
+        "glasses",
+        "helmet",
+        "angry"
+    ],
+    "tlm024": [
+        "robot",
+        "hat"
+    ],
+    "cty0230": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "njo159": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "njo233": [
+        "robot",
+        "angry"
+    ],
+    "ow010": [
+        "human",
+        "angry",
+        "facial hair"
+    ],
+    "sh682": [
+        "alien"
+    ],
     "njo155": [
         "alien",
         "helmet"
+    ],
+    "njo204": [
+        "alien",
+        "helmet"
+    ],
+    "sh102": [
+        "alien",
+        "angry"
+    ],
+    "sh370": [
+        "alien",
+        "angry"
+    ],
+    "sh413": [
+        "alien",
+        "helmet",
+        "angry"
+    ],
+    "sh733": [
+        "alien",
+        "angry"
+    ],
+    "pi021": [
+        "human",
+        "hat",
+        "happy",
+        "facial hair"
+    ],
+    "pi032": [
+        "human",
+        "hat",
+        "happy",
+        "facial hair"
+    ],
+    "pi051": [
+        "human",
+        "hat",
+        "happy",
+        "facial hair"
+    ],
+    "pi057": [
+        "human",
+        "hat"
+    ],
+    "pi058": [
+        "human",
+        "hat"
     ],
     "cty0576": [
         "human",
@@ -1850,8 +2329,94 @@
         "happy",
         "facial hair"
     ],
+    "LLP018": [
+        "human",
+        "happy"
+    ],
+    "LLP022": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "LLP023": [
+        "human",
+        "angry"
+    ],
+    "LLP025": [
+        "human",
+        "happy"
+    ],
+    "LLP026": [
+        "human",
+        "glasses",
+        "happy"
+    ],
+    "LLP029": [
+        "human",
+        "happy"
+    ],
+    "ac001": [
+        "human",
+        "glasses",
+        "helmet",
+        "happy"
+    ],
+    "ac003": [
+        "alien"
+    ],
+    "ac007": [
+        "human",
+        "facial hair"
+    ],
+    "ac009": [
+        "human",
+        "helmet",
+        "happy"
+    ],
     "sh544": [
         "human"
+    ],
+    "ac011": [
+        "alien"
+    ],
+    "ac012": [
+        "alien"
+    ],
+    "ac013": [
+        "human",
+        "helmet",
+        "angry"
+    ],
+    "adp009": [
+        "human",
+        "happy"
+    ],
+    "adp010": [
+        "human",
+        "happy"
+    ],
+    "adp012": [
+        "human",
+        "helmet",
+        "happy",
+        "facial hair"
+    ],
+    "adp017": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "adp018": [
+        "human",
+        "happy"
+    ],
+    "adp019": [
+        "human",
+        "happy"
+    ],
+    "adp020": [
+        "human",
+        "happy"
     ],
     "sh458": [
         "human",
@@ -1859,24 +2424,266 @@
         "angry",
         "facial hair"
     ],
+    "adp021": [
+        "human",
+        "helmet",
+        "happy",
+        "facial hair"
+    ],
+    "adp022": [
+        "human",
+        "hat",
+        "happy",
+        "facial hair"
+    ],
+    "adp023": [
+        "human",
+        "happy",
+        "facial hair"
+    ],
+    "adp024": [
+        "human",
+        "happy"
+    ],
+    "adp025": [
+        "human",
+        "glasses",
+        "hat",
+        "facial hair"
+    ],
+    "adp026": [
+        "human",
+        "happy",
+        "facial hair"
+    ],
+    "adp027": [
+        "human",
+        "glasses",
+        "happy"
+    ],
+    "adp028": [
+        "human",
+        "glasses",
+        "helmet",
+        "happy"
+    ],
+    "adp029": [
+        "human",
+        "happy"
+    ],
+    "adp037": [
+        "human",
+        "happy"
+    ],
     "njo309": [
         "alien",
         "hat",
         "happy"
+    ],
+    "adp038": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "adp039": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "adp043": [
+        "human",
+        "hat",
+        "facial hair"
+    ],
+    "adp044": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "adp048": [
+        "human",
+        "happy"
+    ],
+    "adv053": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "adv053b": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "sc092": [
+        "human",
+        "glasses",
+        "helmet",
+        "happy"
+    ],
+    "atl005": [
+        "human",
+        "helmet",
+        "facial hair"
+    ],
+    "atl006a": [
+        "human",
+        "helmet",
+        "happy",
+        "facial hair"
     ],
     "colhp34": [
         "human",
         "angry",
         "happy"
     ],
+    "nex078": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "tnt028": [
+        "alien",
+        "glasses",
+        "angry"
+    ],
+    "uagt036": [
+        "alien",
+        "helmet",
+        "angry"
+    ],
+    "hp335": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "lor035": [
+        "human",
+        "angry"
+    ],
+    "pi101": [
+        "human",
+        "angry"
+    ],
+    "sw0638": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "zip004": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "col118": [
+        "human",
+        "helmet"
+    ],
+    "jw066": [
+        "human",
+        "angry",
+        "happy",
+        "facial hair"
+    ],
     "jail003": [
         "human",
         "hat",
         "happy"
     ],
+    "loc017": [
+        "alien"
+    ],
+    "sh669": [
+        "robot"
+    ],
+    "sh680": [
+        "human",
+        "helmet",
+        "angry"
+    ],
+    "cty0687": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "cty0734": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "cty0780": [
+        "human",
+        "happy"
+    ],
+    "cty0869": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "jw039": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "njo410": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "njo763": [
+        "alien",
+        "hat",
+        "angry"
+    ],
     "tlm156": [
         "human",
         "happy"
+    ],
+    "sw0609": [
+        "human",
+        "helmet",
+        "angry"
+    ],
+    "sw0875": [
+        "human",
+        "helmet",
+        "angry"
+    ],
+    "sw1137": [
+        "human",
+        "helmet"
+    ],
+    "coltlbm36": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "cty1162": [
+        "human",
+        "glasses",
+        "helmet",
+        "happy"
+    ],
+    "njo784": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "sh343": [
+        "human",
+        "happy"
+    ],
+    "sh357": [
+        "alien",
+        "glasses",
+        "hat"
+    ],
+    "njo009": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "njo012": [
+        "human"
     ],
     "idea076": [
         "human",
@@ -1888,23 +2695,260 @@
         "happy",
         "facial hair"
     ],
+    "njo497": [
+        "alien"
+    ],
+    "sh284": [
+        "human",
+        "glasses",
+        "angry",
+        "happy"
+    ],
+    "sh457": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "dim040": [
+        "human",
+        "cape",
+        "happy"
+    ],
+    "dim041": [
+        "human",
+        "cape",
+        "glasses",
+        "happy"
+    ],
+    "tlm080": [
+        "alien",
+        "happy"
+    ],
+    "tlm081": [
+        "alien",
+        "happy"
+    ],
+    "tlm167": [
+        "alien",
+        "happy"
+    ],
+    "cty0526": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "cty0616": [
+        "human",
+        "hat",
+        "angry"
+    ],
     "twn264": [
         "human",
         "happy"
+    ],
+    "cty0855": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "hol107": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "tlm054": [
+        "human",
+        "happy"
+    ],
+    "colhp02": [
+        "human",
+        "happy"
+    ],
+    "hp176": [
+        "human",
+        "glasses",
+        "happy"
+    ],
+    "lor037": [
+        "human",
+        "angry",
+        "facial hair"
+    ],
+    "sh150": [
+        "human",
+        "happy"
+    ],
+    "sh221": [
+        "human",
+        "angry",
+        "happy"
+    ],
+    "adv054": [
+        "human",
+        "hat",
+        "happy",
+        "facial hair"
+    ],
+    "agt001": [
+        "human",
+        "glasses"
     ],
     "sw0872": [
         "human",
         "helmet",
         "angry"
     ],
+    "agt001a": [
+        "human",
+        "angry"
+    ],
+    "agt002": [
+        "human",
+        "happy"
+    ],
+    "agt003": [
+        "human",
+        "helmet",
+        "angry"
+    ],
+    "agt004": [
+        "human",
+        "glasses",
+        "happy"
+    ],
+    "agt006": [
+        "human",
+        "helmet",
+        "happy",
+        "facial hair"
+    ],
+    "agt007": [
+        "human",
+        "angry"
+    ],
+    "agt008": [
+        "human",
+        "hat",
+        "happy",
+        "facial hair"
+    ],
+    "agt009": [
+        "human",
+        "glasses",
+        "helmet",
+        "happy"
+    ],
+    "agt010": [
+        "human",
+        "glasses",
+        "happy"
+    ],
+    "agt011": [
+        "human",
+        "happy",
+        "facial hair"
+    ],
     "85863pb019": [
         "human",
         "angry",
         "facial hair"
     ],
+    "agt012": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "agt013": [
+        "human",
+        "angry"
+    ],
+    "agt013a": [
+        "human",
+        "angry"
+    ],
+    "agt014": [
+        "alien",
+        "angry"
+    ],
+    "agt015": [
+        "alien",
+        "angry"
+    ],
+    "agt018": [
+        "human",
+        "glasses",
+        "helmet",
+        "happy"
+    ],
+    "agt020": [
+        "human",
+        "glasses",
+        "helmet"
+    ],
+    "agt021": [
+        "human",
+        "happy"
+    ],
+    "agt022": [
+        "human",
+        "glasses",
+        "happy"
+    ],
+    "agt024": [
+        "human",
+        "glasses",
+        "happy"
+    ],
     "cas222": [
         "human",
         "helmet",
+        "happy"
+    ],
+    "agt025": [
+        "human",
+        "glasses",
+        "happy"
+    ],
+    "agt028": [
+        "robot"
+    ],
+    "agt029": [
+        "human",
+        "happy"
+    ],
+    "agt030": [
+        "human",
+        "angry",
+        "facial hair"
+    ],
+    "air001": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "air002": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "air003": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "air004": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "air005": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "air007": [
+        "human",
+        "hat",
         "happy"
     ],
     "coltlbm41": [
@@ -1912,13 +2956,144 @@
         "angry",
         "facial hair"
     ],
+    "air011": [
+        "human",
+        "happy"
+    ],
+    "bob028": [
+        "alien",
+        "happy"
+    ],
+    "bob029": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "bob032": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "bob035": [
+        "alien"
+    ],
+    "cas351": [
+        "alien",
+        "cape",
+        "hat",
+        "angry"
+    ],
+    "vid045": [
+        "human",
+        "angry"
+    ],
+    "vid044": [
+        "alien",
+        "glasses"
+    ],
+    "vid023": [
+        "robot"
+    ],
+    "vid014": [
+        "robot",
+        "happy"
+    ],
     "cty0646": [
         "human",
         "helmet",
         "happy",
         "facial hair"
     ],
+    "vid009": [
+        "alien",
+        "angry"
+    ],
+    "vid008": [
+        "alien",
+        "happy"
+    ],
+    "vid004": [
+        "alien",
+        "glasses"
+    ],
+    "vid001": [
+        "alien",
+        "happy"
+    ],
+    "uagt033": [
+        "human",
+        "glasses",
+        "happy"
+    ],
+    "uagt016": [
+        "human",
+        "glasses",
+        "helmet",
+        "angry"
+    ],
+    "uagt004": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "twn401": [
+        "robot"
+    ],
+    "twn258": [
+        "alien",
+        "helmet",
+        "facial hair"
+    ],
+    "twn102": [
+        "alien"
+    ],
     "sw0075": [
+        "alien"
+    ],
+    "tnt029": [
+        "alien",
+        "glasses",
+        "angry"
+    ],
+    "tnt024": [
+        "alien",
+        "glasses",
+        "angry"
+    ],
+    "tnt020": [
+        "human",
+        "cape",
+        "helmet",
+        "angry"
+    ],
+    "tnt017": [
+        "alien",
+        "glasses",
+        "angry"
+    ],
+    "tnt012": [
+        "alien",
+        "glasses",
+        "happy"
+    ],
+    "tnt006": [
+        "robot"
+    ],
+    "tnt005": [
+        "robot"
+    ],
+    "tnt002": [
+        "alien",
+        "glasses",
+        "angry"
+    ],
+    "tlr010": [
+        "human",
+        "glasses",
+        "hat",
+        "angry"
+    ],
+    "tlm147": [
         "alien"
     ],
     "vik033": [
@@ -1927,8 +3102,93 @@
         "angry",
         "facial hair"
     ],
+    "tlm141": [
+        "alien"
+    ],
+    "tlm102": [
+        "alien",
+        "angry"
+    ],
+    "tlm101": [
+        "alien",
+        "angry"
+    ],
+    "tlm090": [
+        "human",
+        "cape",
+        "helmet",
+        "angry",
+        "happy"
+    ],
+    "tlm089": [
+        "robot"
+    ],
+    "tlm055": [
+        "robot",
+        "helmet"
+    ],
+    "tlm045": [
+        "robot",
+        "hat"
+    ],
+    "tlm044": [
+        "robot",
+        "hat"
+    ],
+    "tlm014": [
+        "robot",
+        "angry",
+        "facial hair"
+    ],
+    "tlm011": [
+        "robot"
+    ],
     "sw0002b": [
         "robot",
+        "helmet"
+    ],
+    "sw1155": [
+        "alien",
+        "angry",
+        "facial hair"
+    ],
+    "sw1135": [
+        "robot",
+        "cape",
+        "helmet"
+    ],
+    "sw1130": [
+        "alien",
+        "happy"
+    ],
+    "sw1127": [
+        "alien",
+        "cape",
+        "glasses",
+        "hat"
+    ],
+    "sw1126": [
+        "alien",
+        "cape",
+        "angry"
+    ],
+    "sw1121": [
+        "robot",
+        "cape",
+        "helmet"
+    ],
+    "sw1093": [
+        "robot",
+        "helmet"
+    ],
+    "sw1080": [
+        "robot",
+        "cape",
+        "helmet"
+    ],
+    "sw1077": [
+        "robot",
+        "cape",
         "helmet"
     ],
     "90398pb026": [
@@ -1939,25 +3199,275 @@
         "human",
         "helmet"
     ],
+    "sw1068": [
+        "alien"
+    ],
+    "sw1057": [
+        "robot",
+        "cape",
+        "helmet"
+    ],
+    "sw1051": [
+        "robot"
+    ],
+    "sw1050": [
+        "robot",
+        "helmet"
+    ],
+    "sw0984": [
+        "alien"
+    ],
+    "sw0938": [
+        "robot"
+    ],
+    "sw0928": [
+        "robot"
+    ],
+    "sw0898": [
+        "alien"
+    ],
+    "cas551": [
+        "human",
+        "helmet",
+        "angry",
+        "facial hair"
+    ],
+    "col142": [
+        "alien",
+        "hat",
+        "facial hair"
+    ],
     "cas448": [
         "human",
         "helmet",
         "happy"
     ],
+    "col155": [
+        "alien",
+        "hat"
+    ],
+    "col161": [
+        "alien",
+        "glasses",
+        "hat",
+        "facial hair"
+    ],
+    "col162": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "col193": [
+        "alien",
+        "happy"
+    ],
+    "col209": [
+        "alien"
+    ],
+    "col218": [
+        "alien",
+        "happy"
+    ],
+    "col219": [
+        "alien",
+        "happy"
+    ],
+    "col238": [
+        "robot",
+        "helmet"
+    ],
+    "col355": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "colhp09": [
+        "human"
+    ],
     "sh730": [
         "alien",
         "angry"
+    ],
+    "colhp10": [
+        "alien"
+    ],
+    "colhp15": [
+        "human",
+        "glasses",
+        "happy"
+    ],
+    "colhp27": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "colhp36": [
+        "glasses",
+        "angry"
+    ],
+    "collt04": [
+        "alien",
+        "happy"
+    ],
+    "collt05": [
+        "alien"
+    ],
+    "collt07": [
+        "alien",
+        "happy"
+    ],
+    "collt08": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "collt10": [
+        "alien",
+        "hat"
+    ],
+    "collt11": [
+        "alien",
+        "happy"
     ],
     "njo557": [
         "alien",
         "hat"
     ],
+    "collt12": [
+        "alien",
+        "happy"
+    ],
+    "colmar01": [
+        "human",
+        "cape",
+        "hat",
+        "happy"
+    ],
+    "colmar02": [
+        "alien",
+        "cape"
+    ],
+    "colsh08": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "colsh12": [
+        "alien",
+        "happy"
+    ],
+    "coltlbm12": [
+        "alien"
+    ],
+    "coltlbm14": [
+        "alien"
+    ],
+    "coltlbm15": [
+        "human",
+        "glasses",
+        "hat",
+        "angry"
+    ],
+    "coltlbm16": [
+        "human",
+        "cape",
+        "helmet"
+    ],
     "sw0281": [
         "alien",
         "helmet"
     ],
+    "coltlbm22": [
+        "human",
+        "glasses",
+        "hat",
+        "angry"
+    ],
+    "coltlbm27": [
+        "alien",
+        "cape"
+    ],
+    "coltlbm29": [
+        "alien",
+        "helmet",
+        "happy"
+    ],
+    "coltlbm40": [
+        "human",
+        "angry",
+        "facial hair"
+    ],
+    "coltlbm44": [
+        "alien",
+        "helmet"
+    ],
+    "coltm03": [
+        "alien"
+    ],
+    "coltm04": [
+        "alien"
+    ],
+    "coltm07": [
+        "alien",
+        "hat"
+    ],
+    "coltm08": [
+        "alien",
+        "facial hair"
+    ],
+    "coltm12": [
+        "alien",
+        "hat"
+    ],
     "sw0983": [
         "alien"
+    ],
+    "cas201": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "cas533": [
+        "human",
+        "happy"
+    ],
+    "col119": [
+        "human",
+        "glasses",
+        "happy"
+    ],
+    "col135": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "col172": [
+        "human",
+        "helmet",
+        "facial hair"
+    ],
+    "col179": [
+        "human",
+        "cape",
+        "facial hair"
+    ],
+    "col213": [
+        "human",
+        "glasses",
+        "happy",
+        "facial hair"
+    ],
+    "col222": [
+        "alien",
+        "happy"
+    ],
+    "col227": [
+        "alien",
+        "happy"
+    ],
+    "col246": [
+        "robot",
+        "angry"
     ],
     "zip016": [
         "human",
@@ -1965,12 +3475,145 @@
         "helmet",
         "happy"
     ],
+    "col248": [
+        "alien"
+    ],
+    "col295": [
+        "human",
+        "angry",
+        "facial hair"
+    ],
+    "col301": [
+        "human",
+        "hat",
+        "angry",
+        "facial hair"
+    ],
+    "col318": [
+        "human",
+        "hat",
+        "angry",
+        "happy"
+    ],
+    "col331": [
+        "human"
+    ],
+    "col332": [
+        "human",
+        "happy",
+        "facial hair"
+    ],
+    "col339": [
+        "human"
+    ],
+    "col343": [
+        "alien",
+        "helmet",
+        "angry"
+    ],
+    "col352": [
+        "alien",
+        "helmet",
+        "angry"
+    ],
+    "colsh02": [
+        "human",
+        "hat",
+        "angry",
+        "happy"
+    ],
     "sim028": [
         "human",
         "happy",
         "facial hair"
     ],
+    "coltlbm05": [
+        "human",
+        "glasses",
+        "helmet",
+        "happy"
+    ],
+    "coltlnm15": [
+        "alien",
+        "glasses",
+        "happy"
+    ],
+    "cty0923": [
+        "alien",
+        "glasses",
+        "hat"
+    ],
+    "cty0980": [
+        "human",
+        "helmet",
+        "angry"
+    ],
+    "cty1164": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "cty1316": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "cty1339": [
+        "human",
+        "happy"
+    ],
+    "cty1447": [
+        "alien"
+    ],
+    "dim003": [
+        "alien",
+        "hat"
+    ],
+    "dim031": [
+        "alien"
+    ],
     "hol047": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "dim032": [
+        "alien"
+    ],
+    "dim045": [
+        "human"
+    ],
+    "dim048": [
+        "alien",
+        "cape",
+        "hat",
+        "angry"
+    ],
+    "dim049": [
+        "alien"
+    ],
+    "dim053": [
+        "human"
+    ],
+    "dim054": [
+        "human",
+        "happy"
+    ],
+    "dis003": [
+        "alien",
+        "helmet",
+        "happy"
+    ],
+    "dis006": [
+        "alien",
+        "cape",
+        "helmet"
+    ],
+    "dis009": [
+        "alien",
+        "happy"
+    ],
+    "dis010": [
         "alien",
         "hat",
         "happy"
@@ -1979,9 +3622,52 @@
         "human",
         "happy"
     ],
+    "dis011": [
+        "alien",
+        "happy"
+    ],
+    "dis012": [
+        "alien"
+    ],
+    "dis018": [
+        "alien",
+        "happy"
+    ],
+    "dis041": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "div001a": [
+        "human",
+        "helmet",
+        "happy",
+        "facial hair"
+    ],
+    "gen003": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "gen005": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "gen008": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "gen016": [
+        "alien",
+        "helmet",
+        "happy"
+    ],
     "sw0743": [
         "human",
         "helmet",
+        "angry",
         "happy"
     ],
     "sh587": [
@@ -1990,10 +3676,104 @@
         "helmet",
         "angry"
     ],
+    "gen026": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "gen037": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "hol045": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "hol045a": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "hol049": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "hol063": [
+        "human",
+        "cape",
+        "happy"
+    ],
+    "hol086": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "hol144": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "hol160": [
+        "alien",
+        "hat"
+    ],
+    "hol161": [
+        "alien",
+        "hat"
+    ],
     "njo474": [
         "human",
         "angry",
         "happy"
+    ],
+    "hol196": [
+        "human",
+        "hat",
+        "happy"
+    ],
+    "hol202": [
+        "alien",
+        "hat"
+    ],
+    "hol218": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "hol236": [
+        "human",
+        "hat",
+        "happy",
+        "facial hair"
+    ],
+    "hol252": [
+        "alien"
+    ],
+    "hp183": [
+        "human",
+        "glasses",
+        "hat",
+        "angry"
+    ],
+    "hp187": [
+        "human",
+        "happy"
+    ],
+    "hp194": [
+        "alien",
+        "angry"
+    ],
+    "hp197": [
+        "human",
+        "angry"
+    ],
+    "hp198": [
+        "alien",
+        "hat",
+        "angry"
     ],
     "col256": [
         "human",
@@ -2001,19 +3781,189 @@
         "angry",
         "facial hair"
     ],
+    "hp276": [
+        "alien",
+        "happy"
+    ],
+    "hp277": [
+        "alien"
+    ],
+    "hp310": [
+        "human",
+        "hat"
+    ],
+    "hp312": [
+        "alien"
+    ],
+    "hp323": [
+        "alien",
+        "glasses",
+        "hat",
+        "happy"
+    ],
+    "hs030": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "hs057": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "hs071": [
+        "alien",
+        "hat"
+    ],
+    "hs074": [
+        "alien",
+        "glasses",
+        "hat",
+        "facial hair"
+    ],
+    "idea073": [
+        "alien",
+        "happy"
+    ],
     "pi134": [
         "human",
         "hat",
         "happy",
         "facial hair"
     ],
+    "idea077": [
+        "alien",
+        "happy"
+    ],
+    "idea078": [
+        "alien",
+        "angry"
+    ],
+    "idea086": [
+        "alien",
+        "happy"
+    ],
+    "idea087": [
+        "alien",
+        "happy"
+    ],
+    "idea089": [
+        "alien"
+    ],
+    "idea090": [
+        "alien"
+    ],
+    "idea104": [
+        "alien",
+        "happy"
+    ],
+    "incr007": [
+        "robot",
+        "glasses"
+    ],
+    "gg011": [
+        "human",
+        "hat",
+        "happy",
+        "facial hair"
+    ],
+    "gg011s": [
+        "human",
+        "helmet",
+        "facial hair"
+    ],
     "cty0216": [
         "human",
         "happy"
     ],
+    "hs004": [
+        "human",
+        "hat",
+        "angry",
+        "happy"
+    ],
+    "idea025": [
+        "human",
+        "glasses",
+        "angry",
+        "facial hair"
+    ],
+    "loc003": [
+        "alien"
+    ],
+    "loc030": [
+        "alien",
+        "cape"
+    ],
+    "loc041": [
+        "alien",
+        "cape"
+    ],
+    "loc042": [
+        "alien",
+        "hat"
+    ],
+    "loc043": [
+        "alien",
+        "cape"
+    ],
+    "loc049": [
+        "alien",
+        "angry",
+        "happy"
+    ],
+    "loc073": [
+        "alien",
+        "angry"
+    ],
+    "loc081": [
+        "alien",
+        "angry"
+    ],
     "sw0785": [
         "human",
         "helmet",
+        "angry"
+    ],
+    "loc082": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "loc084": [
+        "alien",
+        "angry"
+    ],
+    "loc091": [
+        "alien",
+        "angry"
+    ],
+    "loc093": [
+        "alien",
+        "angry"
+    ],
+    "loc098": [
+        "alien",
+        "hat"
+    ],
+    "loc101": [
+        "alien"
+    ],
+    "loc105": [
+        "alien",
+        "angry"
+    ],
+    "loc113": [
+        "alien",
+        "angry"
+    ],
+    "loc161": [
+        "alien",
+        "cape",
+        "angry"
+    ],
+    "lor060": [
+        "alien",
         "angry"
     ],
     "sh355": [
@@ -2022,10 +3972,87 @@
         "helmet",
         "angry"
     ],
+    "min022": [
+        "alien"
+    ],
+    "min027": [
+        "alien"
+    ],
+    "min046": [
+        "human",
+        "hat"
+    ],
+    "min049": [
+        "alien"
+    ],
+    "min066": [
+        "alien"
+    ],
+    "min069": [
+        "alien"
+    ],
+    "min087": [
+        "alien"
+    ],
+    "min107": [
+        "alien"
+    ],
+    "min108": [
+        "alien"
+    ],
+    "min110": [
+        "alien"
+    ],
     "alp028": [
         "human",
         "glasses",
         "helmet",
+        "happy"
+    ],
+    "min127": [
+        "alien"
+    ],
+    "mk101": [
+        "alien",
+        "angry",
+        "facial hair"
+    ],
+    "mnn005": [
+        "alien",
+        "glasses",
+        "happy"
+    ],
+    "mnn006": [
+        "alien",
+        "glasses",
+        "happy"
+    ],
+    "mnn007": [
+        "alien",
+        "glasses",
+        "happy"
+    ],
+    "mnn008": [
+        "alien",
+        "glasses",
+        "angry"
+    ],
+    "mnn009": [
+        "alien",
+        "glasses"
+    ],
+    "mnn010": [
+        "alien",
+        "glasses"
+    ],
+    "mnn011": [
+        "alien",
+        "glasses",
+        "happy"
+    ],
+    "mnn013": [
+        "alien",
+        "glasses",
         "happy"
     ],
     "sh736": [
@@ -2035,28 +4062,232 @@
         "happy",
         "facial hair"
     ],
+    "mnn014": [
+        "alien",
+        "glasses",
+        "angry"
+    ],
+    "mof008": [
+        "alien",
+        "angry"
+    ],
+    "mof012": [
+        "alien",
+        "hat"
+    ],
+    "mof013": [
+        "alien",
+        "angry"
+    ],
+    "nex017": [
+        "alien",
+        "angry"
+    ],
+    "nex024": [
+        "alien",
+        "helmet"
+    ],
+    "nex038": [
+        "alien",
+        "helmet",
+        "angry"
+    ],
+    "nex039": [
+        "alien",
+        "helmet"
+    ],
+    "nex039b": [
+        "alien",
+        "helmet"
+    ],
+    "nex041": [
+        "alien",
+        "helmet"
+    ],
     "col387": [
         "human",
         "hat",
         "happy"
     ],
-    "sh698": [
+    "nex047": [
+        "alien",
+        "cape",
+        "hat",
+        "happy"
+    ],
+    "nex053": [
+        "robot",
+        "happy"
+    ],
+    "nex054": [
         "alien",
         "happy"
+    ],
+    "nex060": [
+        "robot",
+        "helmet"
+    ],
+    "nex068": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "nex069": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "nex074": [
+        "alien",
+        "helmet",
+        "angry"
+    ],
+    "nex079": [
+        "human",
+        "helmet",
+        "happy"
+    ],
+    "nex087": [
+        "alien",
+        "cape",
+        "hat",
+        "angry"
+    ],
+    "nex090": [
+        "robot",
+        "helmet"
+    ],
+    "sh698": [
+        "alien"
     ],
     "twn162": [
         "human",
         "happy"
     ],
+    "nex091": [
+        "robot",
+        "helmet",
+        "happy"
+    ],
+    "nex094": [
+        "robot",
+        "helmet"
+    ],
+    "nex099": [
+        "robot",
+        "happy"
+    ],
+    "nex103": [
+        "robot",
+        "helmet",
+        "happy"
+    ],
+    "nex104": [
+        "alien",
+        "angry"
+    ],
+    "njo019": [
+        "alien",
+        "hat",
+        "happy"
+    ],
+    "njo056": [
+        "alien"
+    ],
+    "njo063": [
+        "alien",
+        "hat"
+    ],
+    "njo086": [
+        "alien",
+        "happy"
+    ],
+    "njo088": [
+        "alien",
+        "angry"
+    ],
     "hol168": [
         "alien",
         "happy"
+    ],
+    "njo115": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "njo138": [
+        "alien",
+        "hat",
+        "angry"
+    ],
+    "njo160": [
+        "alien",
+        "hat"
+    ],
+    "njo189": [
+        "alien",
+        "glasses",
+        "hat"
+    ],
+    "njo238": [
+        "alien"
+    ],
+    "njo257": [
+        "alien"
+    ],
+    "njo260": [
+        "alien",
+        "glasses",
+        "hat",
+        "angry"
+    ],
+    "njo266": [
+        "alien",
+        "glasses",
+        "angry"
+    ],
+    "njo284": [
+        "human",
+        "hat",
+        "angry"
+    ],
+    "njo285": [
+        "alien",
+        "hat"
     ],
     "col258": [
         "human",
         "cape",
         "hat",
         "happy"
+    ],
+    "njo291": [
+        "alien",
+        "cape",
+        "angry"
+    ],
+    "njo299": [
+        "alien",
+        "angry"
+    ],
+    "njo306": [
+        "alien",
+        "angry"
+    ],
+    "njo310": [
+        "alien",
+        "cape",
+        "hat",
+        "angry"
+    ],
+    "njo339": [
+        "alien",
+        "hat"
+    ],
+    "njo390": [
+        "alien",
+        "helmet",
+        "angry"
     ],
     "nex126": [
         "alien",
@@ -2077,12 +4308,6 @@
     ],
     "njo724": [
         "alien"
-    ],
-    "sc092": [
-        "human",
-        "glasses",
-        "helmet",
-        "happy"
     ],
     "njo262": [
         "human",
