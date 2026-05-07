@@ -210,6 +210,7 @@ def finetune_model(
     epochs: int = 10,
     batch_size: int = 8,
     learning_rate: float = 1e-3,
+    use_lr_scheduler: bool = True,
 ) -> dict[str, float]:
     """Continue training from a saved model and persist the best checkpoint."""
     train_dataset_path = train_dataset_path or get_latest_dataset_path("train_seed_*.json")
@@ -233,6 +234,20 @@ def finetune_model(
 
     loss_fn = nn.BCEWithLogitsLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    scheduler = (
+        torch.optim.lr_scheduler.ReduceLROnPlateau(
+            optimizer,
+            mode="min",
+            factor=0.5,
+            patience=2,
+            threshold=1e-3,
+            threshold_mode="rel",
+            cooldown=0,
+            min_lr=1e-6,
+        )
+        if use_lr_scheduler
+        else None
+    )
 
     best_metrics = {"loss": float("inf"), "f1": 0.0}
     for epoch in range(1, epochs + 1):
@@ -243,10 +258,14 @@ def finetune_model(
 
         train_loss = sum(losses_epoch) / len(losses_epoch)
         train_f1 = sum(f1_epoch) / len(f1_epoch)
+        current_lr = optimizer.param_groups[0]["lr"]
         print(
             f"epoch={epoch} train_loss={train_loss:.4f} train_f1={train_f1:.4f} "
-            f"val_loss={metrics['loss']:.4f} val_f1={metrics['f1']:.4f}"
+            f"val_loss={metrics['loss']:.4f} val_f1={metrics['f1']:.4f} lr={current_lr:.2e}"
         )
+
+        if scheduler is not None:
+            scheduler.step(metrics["loss"])
 
         if metrics["loss"] < best_metrics["loss"]:
             best_metrics = metrics
@@ -275,6 +294,9 @@ def parse_args() -> argparse.Namespace:
     train_parser.add_argument("--epochs", type=int, default=10)
     train_parser.add_argument("--batch-size", type=int, default=8)
     train_parser.add_argument("--learning-rate", type=float, default=1e-3)
+    train_parser.add_argument(
+        "--use-lr-scheduler", action=argparse.BooleanOptionalAction, default=True
+    )
 
     return parser.parse_args()
 
@@ -308,6 +330,7 @@ def main() -> None:
             epochs=args.epochs,
             batch_size=args.batch_size,
             learning_rate=args.learning_rate,
+            use_lr_scheduler=args.use_lr_scheduler,
         )
         print(f"best_val_loss: {metrics['loss']:.4f}")
         print(f"best_val_f1: {metrics['f1']:.4f}")

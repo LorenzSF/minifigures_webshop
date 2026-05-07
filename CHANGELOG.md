@@ -51,6 +51,16 @@
   - Open Product tab from marketplace
 
 
+### [SPRINT 3]
+#### objectives
+1. Create a labeling application (Label Studio) to label more data
+2. Use active learning to label only what matters
+3. Model improvements (pick one)
+  - Dataset balancing
+  - Improved loss functions
+  - Learning rate scheduling
+
+
 ### [SPRINT 4]
 #### objectives
 1. Provision cloud infrastructure via Terraform (infrastructure/terraform/modules/student-stack)

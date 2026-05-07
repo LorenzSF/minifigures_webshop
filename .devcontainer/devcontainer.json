@@ -22,6 +22,8 @@
                 "charliermarsh.ruff",
                 "GitHub.copilot",
                 "GitHub.copilot-chat",
+                "Anthropic.claude-code",
+                "openai.chatgpt",
                 "ms-azuretools.vscode-docker",
                 "ms-python.mypy-type-checker",
                 "ms-python.python",
