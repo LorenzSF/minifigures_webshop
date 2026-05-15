@@ -55,10 +55,7 @@
 #### objectives
 1. Create a labeling application (Label Studio) to label more data
 2. Use active learning to label only what matters
-3. Model improvements (pick one)
-  - Dataset balancing
-  - Improved loss functions
-  - Learning rate scheduling
+3. Improved loss functions as a model improvement 
 
 
 ### [SPRINT 4]
@@ -77,6 +74,14 @@
   - Streamlit frontend service (port 80)
   - Services connected via Docker network (kulroai-net)
   - Application accessible via public IP and domain
+
+
+
+### [SPRINT 5]
+#### objectives
+1. Deliver the application through an automated DevOps workflow using GitHub Actions.
+
+
 
 #### Additional changes made
 - Updated `src/minifigures_app/constants.py` to support environment-based configuration

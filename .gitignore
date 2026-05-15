@@ -83,3 +83,7 @@ fastdup/
 
 # Key pairs
 .pem
+
+# Internal work files
+GPU Google colab.md
+PLAN.md
