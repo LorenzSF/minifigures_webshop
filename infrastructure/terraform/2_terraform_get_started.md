@@ -40,66 +40,28 @@ module. To do so:
 
   ![main_tf](./img/main_tf.png)
 
-* In the `main.tf` file, copy/paste the following content. Make sure you filled in appropriately the
-  the two placeholders `<INSERT HERE YOUR IAM USERNAME>` and `<INSERT HERE YOUR SSH KEYPAIR NAME>`:
+* The Terraform code is already present in `infrastructure/terraform/main.tf`. Keep account-specific
+  values out of Git by creating local configuration files from the examples:
 
-  ```hcl  
-  terraform {
-    backend "s3" {
-      key            = "<INSERT HERE YOUR IAM USERNAME>/infrastructure.tfstate"
-      bucket         = "terraform-states-616454187396"
-      region         = "eu-west-3"
-      dynamodb_table = "terraform-states"
-    }
-  }
-
-  provider "aws" {
-    region              = "eu-west-3"
-    allowed_account_ids = ["516454187396"]
-  }
-
-  module "student_stack" {
-    source            = "git::https://github.com/kuleuven-realization-of-ai/shared-resources.git//terraform/modules/student-stack?ref=main"
-    ec2_key_pair_name = <INSERT HERE YOUR SSH KEYPAIR NAME>
-    ec2_instance_type = "t3.small"
-  }
-
-  output "ecr_repository_url" {
-    value = module.student_stack.ecr_repository_url
-  }
-
-  output "ec2_instance_id" {
-    value = module.student_stack.ec2_instance_id
-  }
-
-  output "ec2_instance_public_ip" {
-    value = module.student_stack.ec2_instance_public_ip
-  }
-
-  output "ec2_instance_public_dns" {
-    value = module.student_stack.ec2_instance_public_dns
-  }
-
-  output "s3_bucket_name" {
-    value = module.student_stack.s3_bucket_name
-  }
-
-  output "domain_name" {
-    value = module.student_stack.domain_name
-  }
+  ```bash
+  cd infrastructure/terraform
+  cp terraform.tfvars.example terraform.tfvars
+  cp backend.hcl.example backend.hcl
   ```
 
-  For example, if your IAM user name is `teststudent` and your SSH keypair name is `testuser-keypair`,
-  you will end up with the following `main.tf` file:
-
-  ![tf_filled_in](./img/tf_filled_in.png)
+  Fill in `terraform.tfvars` with your AWS account ID and EC2 key pair name. Fill in `backend.hcl`
+  with the Terraform state bucket, state key, region, and DynamoDB lock table provided for your account.
 
 * Now that you have the `main.tf` file, you can initialize Terraform and deploy the `student-stack` module.
-  Start by initializing Terraform (make sure you have your `aws` CLI properly configured). From the 
+  Start by initializing Terraform (make sure you have your `aws` CLI properly configured). From the
   root of your repository, run:
   ```bash
-  cd infrastructure
-  terraform init
+  cd infrastructure/terraform
+  terraform init -backend-config=backend.hcl
+  ```
+  If this checkout was already initialized with another backend configuration, run:
+  ```bash
+  terraform init -reconfigure -backend-config=backend.hcl
   ```
   ![terraform_init](./img/tf_init.png)
 

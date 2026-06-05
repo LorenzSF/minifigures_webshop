@@ -25,6 +25,7 @@ jobs:
           test -n "$AWS_REGION"
           test -n "$ECR_REPOSITORY_URL"
           test -n "$EC2_HOST"
+          test -n "$S3_BUCKET_NAME"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -88,11 +89,11 @@ jobs:
           sudo curl -fL https://roai-data-readonly.s3.eu-central-1.amazonaws.com/dataset.json \
             -o /root/minifigures-runtime/data/dataset.json
 
-          if [ -n "${S3_BUCKET_NAME:-}" ]; then
-            aws s3 cp "s3://$S3_BUCKET_NAME/models/my_model" \
-              /root/minifigures-runtime/models/my_model \
-              --recursive || true
-          fi
+          aws s3 cp "s3://$S3_BUCKET_NAME/models/my_model" \
+            /root/minifigures-runtime/models/my_model \
+            --recursive
+          test -f /root/minifigures-runtime/models/my_model/metadata.json
+          test -f /root/minifigures-runtime/models/my_model/weights.pt
 
           docker network create kulroai-net 2>/dev/null || true
           docker stop api app 2>/dev/null || true

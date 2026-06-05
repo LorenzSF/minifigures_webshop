@@ -74,9 +74,17 @@ dist/
 # Terraform
 .terraform/
 *.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+backend.hcl
 
 # VS Code
 .vscode/
+
+# GenAI local skills and workspace instructions
+.codex/
+.claude
 
 # Fastdup
 fastdup/

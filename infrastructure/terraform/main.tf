@@ -1,21 +1,16 @@
 terraform {
-  backend "s3" {
-    key            = "frescalorenzo/infrastructure.tfstate"
-    bucket         = "terraform-states-616454187396"
-    region         = "eu-west-3"
-    dynamodb_table = "terraform-states"
-  }
+  backend "s3" {}
 }
 
 provider "aws" {
-  region              = "eu-west-3"
-  allowed_account_ids = ["516454187396"]
+  region              = var.aws_region
+  allowed_account_ids = [var.allowed_account_id]
 }
 
 module "student_stack" {
   source            = "git::https://github.com/kuleuven-realization-of-ai/shared-resources.git//terraform/modules/student-stack?ref=main"
-  ec2_key_pair_name = "fresca-lorenzo-key-pair"
-  ec2_instance_type = "t3.small"
+  ec2_key_pair_name = var.ec2_key_pair_name
+  ec2_instance_type = var.ec2_instance_type
 }
 
 output "ecr_repository_url" {

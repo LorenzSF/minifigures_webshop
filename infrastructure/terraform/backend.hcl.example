@@ -1,0 +1,10 @@
+# Copy this file to backend.hcl and fill in the values for your Terraform state backend.
+# Then initialize Terraform with:
+# terraform init -backend-config=backend.hcl
+# If this checkout was already initialized, use:
+# terraform init -reconfigure -backend-config=backend.hcl
+
+bucket         = "terraform-states-123456789012"
+key            = "your-iam-user-name/infrastructure.tfstate"
+region         = "eu-west-3"
+dynamodb_table = "terraform-states"

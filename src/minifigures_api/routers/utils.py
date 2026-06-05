@@ -17,8 +17,13 @@ def extract_images_from_files(files: list[UploadFile]) -> list[Image.Image]:
             raise HTTPException(
                 status_code=415, detail=f"Media type '{file.content_type}' not valid"
             )
-        with Image.open(file.file) as img:
-            extracted.append(img.convert("RGB").copy())
+        try:
+            with Image.open(file.file) as img:
+                extracted.append(img.convert("RGB").copy())
+        except OSError as exc:
+            raise HTTPException(
+                status_code=415, detail="Uploaded file is not a valid image"
+            ) from exc
     return extracted
 
 
