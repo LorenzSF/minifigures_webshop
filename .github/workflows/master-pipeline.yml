@@ -76,24 +76,24 @@ jobs:
 
           docker pull "$IMAGE_URI"
 
-          sudo mkdir -p /root/minifigures-runtime/data /root/minifigures-runtime/models
+          mkdir -p /home/ec2-user/minifigures-runtime/data /home/ec2-user/minifigures-runtime/models
 
-          if [ ! -d /root/minifigures-runtime/data/minifigures ] || \
-             [ -z "$(sudo find /root/minifigures-runtime/data/minifigures -maxdepth 1 -name '*.png' -print -quit 2>/dev/null)" ]; then
-            sudo curl -fL https://roai-data-readonly.s3.eu-central-1.amazonaws.com/minifigures.tar.gz \
-              -o /root/minifigures-runtime/data/minifigures.tar.gz
-            sudo tar -xzf /root/minifigures-runtime/data/minifigures.tar.gz -C /root/minifigures-runtime/data
-            sudo rm -f /root/minifigures-runtime/data/minifigures.tar.gz
+          if [ ! -d /home/ec2-user/minifigures-runtime/data/minifigures ] || \
+             [ -z "$(find /home/ec2-user/minifigures-runtime/data/minifigures -maxdepth 1 -name '*.png' -print -quit 2>/dev/null)" ]; then
+            curl -fL https://roai-data-readonly.s3.eu-central-1.amazonaws.com/minifigures.tar.gz \
+              -o /home/ec2-user/minifigures-runtime/data/minifigures.tar.gz
+            tar -xzf /home/ec2-user/minifigures-runtime/data/minifigures.tar.gz -C /home/ec2-user/minifigures-runtime/data
+            rm -f /home/ec2-user/minifigures-runtime/data/minifigures.tar.gz
           fi
 
-          sudo curl -fL https://roai-data-readonly.s3.eu-central-1.amazonaws.com/dataset.json \
-            -o /root/minifigures-runtime/data/dataset.json
+          curl -fL https://roai-data-readonly.s3.eu-central-1.amazonaws.com/dataset.json \
+            -o /home/ec2-user/minifigures-runtime/data/dataset.json
 
           aws s3 cp "s3://$S3_BUCKET_NAME/models/my_model" \
-            /root/minifigures-runtime/models/my_model \
+            /home/ec2-user/minifigures-runtime/models/my_model \
             --recursive
-          test -f /root/minifigures-runtime/models/my_model/metadata.json
-          test -f /root/minifigures-runtime/models/my_model/weights.pt
+          test -f /home/ec2-user/minifigures-runtime/models/my_model/metadata.json
+          test -f /home/ec2-user/minifigures-runtime/models/my_model/weights.pt
 
           docker network create kulroai-net 2>/dev/null || true
           docker stop api app 2>/dev/null || true
@@ -104,7 +104,7 @@ jobs:
             --rm \
             --network kulroai-net \
             --name api \
-            -v /root/minifigures-runtime:/workspaces/minifigures-app/data \
+            -v /home/ec2-user/minifigures-runtime:/workspaces/minifigures-app/data \
             -p 8000:8000 \
             -e PYTHONPATH=/workspaces/minifigures-app/src \
             "$IMAGE_URI" \
