@@ -2,76 +2,121 @@ name: Master CICD Pipeline
 
 on:
   push:
-    branches: main
+    branches:
+      - main
 
 jobs:
-
-  build:
-    name: Continuous Integration of the endpoint
+  deploy:
+    name: Build, push, and deploy
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-      attestations: write
-      id-token: write
+
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      ECR_REPOSITORY_URL: ${{ vars.ECR_REPOSITORY_URL }}
+      EC2_HOST: ${{ vars.EC2_HOST }}
+      S3_BUCKET_NAME: ${{ vars.S3_BUCKET_NAME }}
+
     steps:
-      - name: login to GitHub Container Registry
-        # https://github.com/docker/login-action
-        uses: docker/login-action@v3
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate deployment configuration
+        run: |
+          test -n "$AWS_REGION"
+          test -n "$ECR_REPOSITORY_URL"
+          test -n "$EC2_HOST"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          # https://docs.github.com/en/actions/security-guides/automatic-token-authentication
-          password: ${{ secrets.GITHUB_TOKEN }}
-      
-      - uses: actions/checkout@v4
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Build the Docker image
+      - name: Log in to ECR
         run: |
-          git_hash=$(git rev-parse --short HEAD)
-          docker build . -t ghcr.io/${{ github.actor }}/example-cicd/my-example-fastapi-endpoint:$git_hash
+          ECR_REGISTRY="${ECR_REPOSITORY_URL%%/*}"
+          aws ecr get-login-password --region "$AWS_REGION" |
+            docker login --username AWS --password-stdin "$ECR_REGISTRY"
 
-      - name: Test the Docker image
+      - name: Build Docker image
         run: |
-          git_hash=$(git rev-parse --short HEAD)
+          docker build \
+            -t "$ECR_REPOSITORY_URL:${{ github.sha }}" \
+            -t "$ECR_REPOSITORY_URL:latest" \
+            .
+
+      - name: Push Docker image to ECR
+        run: |
+          docker push "$ECR_REPOSITORY_URL:${{ github.sha }}"
+          docker push "$ECR_REPOSITORY_URL:latest"
+
+      - name: Prepare SSH
+        env:
+          AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+        run: |
+          test -n "$AWS_SSH_KEY"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$AWS_SSH_KEY" > ~/.ssh/aws_key
+          chmod 600 ~/.ssh/aws_key
+          ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy on EC2
+        run: |
+          ECR_REGISTRY="${ECR_REPOSITORY_URL%%/*}"
+          IMAGE_URI="$ECR_REPOSITORY_URL:latest"
+
+          ssh -i ~/.ssh/aws_key ec2-user@"$EC2_HOST" \
+            "AWS_REGION='$AWS_REGION' ECR_REGISTRY='$ECR_REGISTRY' IMAGE_URI='$IMAGE_URI' S3_BUCKET_NAME='$S3_BUCKET_NAME' bash -s" <<'EOF'
+          set -euo pipefail
+
+          aws ecr get-login-password --region "$AWS_REGION" |
+            docker login --username AWS --password-stdin "$ECR_REGISTRY"
+
+          docker pull "$IMAGE_URI"
+
+          sudo mkdir -p /root/minifigures-runtime/data /root/minifigures-runtime/models
+
+          if [ ! -d /root/minifigures-runtime/data/minifigures ] || \
+             [ -z "$(sudo find /root/minifigures-runtime/data/minifigures -maxdepth 1 -name '*.png' -print -quit 2>/dev/null)" ]; then
+            sudo curl -fL https://roai-data-readonly.s3.eu-central-1.amazonaws.com/minifigures.tar.gz \
+              -o /root/minifigures-runtime/data/minifigures.tar.gz
+            sudo tar -xzf /root/minifigures-runtime/data/minifigures.tar.gz -C /root/minifigures-runtime/data
+            sudo rm -f /root/minifigures-runtime/data/minifigures.tar.gz
+          fi
+
+          sudo curl -fL https://roai-data-readonly.s3.eu-central-1.amazonaws.com/dataset.json \
+            -o /root/minifigures-runtime/data/dataset.json
+
+          if [ -n "${S3_BUCKET_NAME:-}" ]; then
+            aws s3 cp "s3://$S3_BUCKET_NAME/models/my_model" \
+              /root/minifigures-runtime/models/my_model \
+              --recursive || true
+          fi
+
+          docker network create kulroai-net 2>/dev/null || true
+          docker stop api app 2>/dev/null || true
+          docker rm api app 2>/dev/null || true
+
           docker run \
-          --entrypoint=/bin/bash \
-          ghcr.io/${{ github.actor }}/example-cicd/my-example-fastapi-endpoint:$git_hash \
-          ./script/test
+            -d \
+            --rm \
+            --network kulroai-net \
+            --name api \
+            -v /root/minifigures-runtime:/workspaces/minifigures-app/data \
+            -p 8000:8000 \
+            -e PYTHONPATH=/workspaces/minifigures-app/src \
+            "$IMAGE_URI" \
+            api
 
-      - name: Login and push the Docker image to Github Packages
-        run: |
-          git_hash=$(git rev-parse --short HEAD)
-          docker push ghcr.io/${{ github.actor }}/example-cicd/my-example-fastapi-endpoint:$git_hash
-
-    # - name: Login to ECR
-    #   # https://github.com/docker/login-action?tab=readme-ov-file#aws-elastic-container-registry-ecr
-    #   uses: docker/login-action@v3
-    #   with:
-    #     registry: 516454187396.dkr.ecr.eu-west-3.amazonaws.com
-    #     username: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    
-    # - name: Login and push the Docker image to ECR
-    #   run: |
-    #     git_hash=$(git rev-parse --short HEAD)
-    #     docker push 516454187396.dkr.ecr.eu-west-3.amazonaws.com/cedric/my-example-fastapi-endpoint:$git_hash
-
-    # - name: Prepare SSH
-    #   env:
-    #     SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-    #   run: |
-    #     mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
-    #     chmod 600 ~/.ssh/known_hosts
-    #     ssh-keyscan {your_ec2_hostname_here} >> ~/.ssh/known_hosts
-    #     eval $(ssh-agent)
-    #     echo "$SSH_PRIVATE_KEY" > private_key.pem
-    #     chmod 600 private_key.pem
-    #     ssh-add private_key.pem
-
-    # - name: SSH into EC2 machine
-    #   run: |
-    #     ssh -i private_key.pem ec2-user@{your_ec2_hostname_here} <<EOF
-    #     // here you can write all the commands that need to be executed
-    #     // on your EC2 machine
-    #     EOF
+          docker run \
+            -d \
+            --rm \
+            --network kulroai-net \
+            --name app \
+            -p 80:8500 \
+            -e API_HOST=http://api \
+            -e API_PORT=8000 \
+            "$IMAGE_URI" \
+            app
+          EOF

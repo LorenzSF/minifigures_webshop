@@ -45,6 +45,7 @@ issues = "https://github.com/kuleuven-realization-of-ai/minifigures-webshop-temp
 dev = [
   "commitizen (>=4.3.0)",
   "coverage[toml] (>=7.6.10)",
+  "httpx (>=0.28.1)",
   "ipykernel (>=6.29.4)",
   "ipython (>=8.18.0)",
   "ipywidgets (>=8.1.2)",
