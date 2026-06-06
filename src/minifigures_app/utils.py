@@ -1,6 +1,7 @@
 """Utils functions for the Streamlit app."""
 
 import io
+from typing import TypedDict
 
 import requests
 from PIL import Image
@@ -11,31 +12,118 @@ from minifigures_app.constants import URL
 REQUEST_TIMEOUT_SECONDS = 10
 
 
-def predict_image(image: Image.Image) -> dict[str, float]:
-    """Get model predictions for a given image using a FastAPI request."""
-    # Format the uploaded image
+class ApiResponseError(RuntimeError):
+    """Raised when the API response cannot be used by the Streamlit app."""
+
+
+class FaceMatchPayload(TypedDict):
+    """Face search match payload returned by the API."""
+
+    tag: str
+    score: float
+
+
+class FaceSearchPayload(TypedDict):
+    """Face search payload returned by the API."""
+
+    query_box: dict[str, float]
+    matches: list[FaceMatchPayload]
+
+
+def _image_to_png_bytes(image: Image.Image) -> bytes:
+    """Serialize a PIL image as PNG bytes."""
     buff = io.BytesIO()
     image.save(buff, format="PNG")
-    img_str = buff.getvalue()
+    return buff.getvalue()
+
+
+def predict_image(image: Image.Image) -> dict[str, float]:
+    """Get model predictions for a given image using a FastAPI request."""
+    img_bytes = _image_to_png_bytes(image)
 
     # Create the prediction
     try:
         response = requests.post(
             url=f"{URL}/predict/image/",
-            files=[("file", ("UID", img_str, "image/png"))],
+            files=[("file", ("UID", img_bytes, "image/png"))],
             timeout=REQUEST_TIMEOUT_SECONDS,
         )
         response.raise_for_status()
         payload = response.json()
     except RequestException as exc:
-        raise RuntimeError(f"Prediction request failed: {exc}") from exc
+        msg = f"Prediction request failed: {exc}"
+        raise ApiResponseError(msg) from exc
     except ValueError as exc:
-        raise RuntimeError("Prediction response is not valid JSON") from exc
+        msg = "Prediction response is not valid JSON"
+        raise ApiResponseError(msg) from exc
 
     # Return the result
     if "prediction" not in payload:
-        raise RuntimeError("Prediction response is missing the 'prediction' field")
+        msg = "Prediction response is missing the 'prediction' field"
+        raise ApiResponseError(msg)
     return payload["prediction"]
+
+
+def search_similar_faces(image: Image.Image, top_k: int = 6) -> FaceSearchPayload:
+    """Search catalog products with faces similar to the provided image."""
+    if top_k <= 0:
+        msg = f"top_k must be positive, got {top_k}."
+        raise ValueError(msg)
+
+    img_bytes = _image_to_png_bytes(image)
+    try:
+        response = requests.post(
+            url=f"{URL}/face/search/",
+            params={"top_k": top_k},
+            files=[("file", ("UID", img_bytes, "image/png"))],
+            timeout=REQUEST_TIMEOUT_SECONDS,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except RequestException as exc:
+        msg = f"Face search request failed: {exc}"
+        raise ApiResponseError(msg) from exc
+    except ValueError as exc:
+        msg = "Face search response is not valid JSON"
+        raise ApiResponseError(msg) from exc
+
+    return _validate_face_search_payload(payload)
+
+
+def _validate_face_search_payload(payload: object) -> FaceSearchPayload:
+    """Validate the face search API payload shape."""
+    if not isinstance(payload, dict):
+        msg = "Face search response has an invalid format"
+        raise ApiResponseError(msg)
+
+    query_box = payload.get("query_box")
+    raw_matches = payload.get("matches")
+    if not isinstance(query_box, dict):
+        msg = "Face search response is missing the 'query_box' field"
+        raise ApiResponseError(msg)
+    if not isinstance(raw_matches, list):
+        msg = "Face search response is missing the 'matches' field"
+        raise ApiResponseError(msg)
+
+    matches = []
+    for match in raw_matches:
+        if not isinstance(match, dict):
+            msg = "Face search response contains an invalid match"
+            raise ApiResponseError(msg)
+        tag = match.get("tag")
+        score = match.get("score")
+        if not isinstance(tag, str) or not isinstance(score, (int, float)):
+            msg = "Face search response contains an invalid match"
+            raise ApiResponseError(msg)
+        matches.append({"tag": tag, "score": float(score)})
+
+    try:
+        query_box_values = {str(key): float(value) for key, value in query_box.items()}
+    except (TypeError, ValueError) as exc:
+        msg = "Face search response contains an invalid query box"
+        raise ApiResponseError(msg) from exc
+
+    return {"query_box": query_box_values, "matches": matches}
 
 
 def list_im_tags() -> list[str]:
@@ -45,12 +133,15 @@ def list_im_tags() -> list[str]:
         response.raise_for_status()
         payload = response.json()
     except RequestException as exc:
-        raise RuntimeError(f"Failed to fetch image tags: {exc}") from exc
+        msg = f"Failed to fetch image tags: {exc}"
+        raise ApiResponseError(msg) from exc
     except ValueError as exc:
-        raise RuntimeError("Image tags response is not valid JSON") from exc
+        msg = "Image tags response is not valid JSON"
+        raise ApiResponseError(msg) from exc
 
     if not isinstance(payload, list):
-        raise RuntimeError("Image tags response has an invalid format")
+        msg = "Image tags response has an invalid format"
+        raise ApiResponseError(msg)
     return payload
 
 
@@ -64,6 +155,8 @@ def get_image(tag: str) -> Image.Image:
         with Image.open(io.BytesIO(response.content)) as image:
             return image.convert("RGB")
     except RequestException as exc:
-        raise RuntimeError(f"Failed to fetch image '{tag}': {exc}") from exc
+        msg = f"Failed to fetch image '{tag}': {exc}"
+        raise ApiResponseError(msg) from exc
     except OSError as exc:
-        raise RuntimeError(f"Image '{tag}' payload is not a valid image") from exc
+        msg = f"Image '{tag}' payload is not a valid image"
+        raise ApiResponseError(msg) from exc

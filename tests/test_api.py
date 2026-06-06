@@ -4,12 +4,16 @@ import io
 from http import HTTPStatus
 
 import pytest
+import torch
 from fastapi.testclient import TestClient
 from PIL import Image
 from starlette.exceptions import HTTPException
 
+import minifigures_api.routers.face_search as face_search_router_module
 import minifigures_api.routers.predict as predict_router_module
 from minifigures_api.api import app
+from minifigures_model.face_cropper import FaceBox
+from minifigures_model.face_similarity import SimilarFace
 
 client = TestClient(app)
 
@@ -56,4 +60,78 @@ def test_predict_returns_404_when_model_is_missing(monkeypatch: pytest.MonkeyPat
     payload = buffer.getvalue()
 
     response = client.post("/predict/image/", files={"file": ("sample.png", payload, "image/png")})
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+
+def test_face_search_rejects_invalid_image_bytes() -> None:
+    """Test that corrupt face search uploads return an HTTP 415."""
+    response = client.post(
+        "/face/search/", files={"file": ("sample.png", b"not a real image", "image/png")}
+    )
+    assert response.status_code == HTTPStatus.UNSUPPORTED_MEDIA_TYPE
+
+
+def test_face_search_returns_matches(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test the face search response contract with mocked model artifacts."""
+
+    class FakeCropper:
+        def predict_box(self, _image: Image.Image) -> FaceBox:
+            return FaceBox(x_center=0.5, y_center=0.5, width=0.5, height=0.5)
+
+    class FakeIndex:
+        embedding_model_tag = "my_model"
+
+        def find_matches(self, _query_embedding: torch.Tensor, *, top_k: int) -> list[SimilarFace]:
+            assert top_k == 1
+            return [SimilarFace(tag="sw0001", score=0.9)]
+
+    def fetch_fake_cropper() -> FakeCropper:
+        return FakeCropper()
+
+    def fetch_fake_index() -> FakeIndex:
+        return FakeIndex()
+
+    def fetch_fake_embedding_model(_tag: str) -> object:
+        return object()
+
+    def embed_fake_face(_image: Image.Image, _model: object) -> torch.Tensor:
+        return torch.tensor([1.0, 0.0])
+
+    monkeypatch.setattr(face_search_router_module, "fetch_face_cropper", fetch_fake_cropper)
+    monkeypatch.setattr(face_search_router_module, "fetch_face_index", fetch_fake_index)
+    monkeypatch.setattr(
+        face_search_router_module, "fetch_face_embedding_model", fetch_fake_embedding_model
+    )
+    monkeypatch.setattr(face_search_router_module, "embed_face", embed_fake_face)
+
+    image = Image.new("RGB", (20, 20), color=(255, 0, 0))
+    buffer = io.BytesIO()
+    image.save(buffer, format="PNG")
+
+    response = client.post(
+        "/face/search/",
+        params={"top_k": 1},
+        files={"file": ("sample.png", buffer.getvalue(), "image/png")},
+    )
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.json()["matches"] == [{"tag": "sw0001", "score": 0.9}]
+
+
+def test_face_search_returns_404_when_artifact_is_missing(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test that face search surfaces missing artifacts as HTTP 404."""
+
+    def _raise_missing_cropper() -> None:
+        raise HTTPException(status_code=404, detail="Face cropper not found")
+
+    monkeypatch.setattr(face_search_router_module, "fetch_face_cropper", _raise_missing_cropper)
+
+    image = Image.new("RGB", (20, 20), color=(255, 0, 0))
+    buffer = io.BytesIO()
+    image.save(buffer, format="PNG")
+
+    response = client.post(
+        "/face/search/", files={"file": ("sample.png", buffer.getvalue(), "image/png")}
+    )
+
     assert response.status_code == HTTPStatus.NOT_FOUND

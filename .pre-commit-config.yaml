@@ -51,7 +51,8 @@ repos:
         entry: cz check
         args: [--commit-msg-file]
         require_serial: true
-        language: system
+        language: python
+        additional_dependencies: ["commitizen>=4.3.0"]
         stages: [commit-msg]
       - id: uv-lock-check
         name: uv lock check

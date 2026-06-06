@@ -92,7 +92,7 @@ def test_endpoint(url: str) -> None:
 
 
 if __name__ == "__main__":
-    URL = "http://0.0.0.0:8000/predict/image"  # Change this to your endpoint URL
+    URL = "http://frescalorenzo.realization-of-ai.com:8000/predict/image"
 
     test_endpoint(URL)
 

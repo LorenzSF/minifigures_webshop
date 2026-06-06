@@ -7,7 +7,7 @@ import coloredlogs
 from fastapi import FastAPI
 from starlette.exceptions import HTTPException
 
-from minifigures_api.routers import data_router, fetch_model, predict_router
+from minifigures_api.routers import data_router, face_search_router, fetch_model, predict_router
 
 app = FastAPI(
     title="Minifigures Webshop API",
@@ -36,4 +36,5 @@ def startup_event() -> None:
 
 # Specify the different endpoint routers
 app.include_router(data_router, prefix="/data")
+app.include_router(face_search_router, prefix="/face")
 app.include_router(predict_router, prefix="/predict")
