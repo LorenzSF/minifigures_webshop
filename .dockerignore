@@ -1,5 +1,7 @@
 # Caches
 .*_cache/
+**/__pycache__/
+.DS_Store
 
 # Git
 .git/
@@ -19,6 +21,24 @@ notebooks/
 
 # No linting
 .dmypy.json
+.pre-commit-config.yaml
 
 # No testing
 tests/
+reports/
+
+# No training/labeling tools
+src/labeling/
+src/cicd-example/
+src/prodigy_recipes/
+
+# No dev/deployment scripts
+validity_predict_endpoint/
+infrastructure/
+setup_data.sh
+
+# No documentation
+PLAN.md
+CHANGELOG.md
+README.md
+GPU\ Google\ Colab.md

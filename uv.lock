@@ -2129,8 +2129,6 @@ name = "minifigures-app"
 version = "0.0.0"
 source = { editable = "." }
 dependencies = [
-    { name = "dvc", marker = "sys_platform == 'linux'" },
-    { name = "dvc-s3", marker = "sys_platform == 'linux'" },
     { name = "fastapi", marker = "sys_platform == 'linux'" },
     { name = "gunicorn", marker = "sys_platform == 'linux'" },
     { name = "llvmlite", marker = "sys_platform == 'linux'" },
@@ -2143,7 +2141,6 @@ dependencies = [
     { name = "pymatting", marker = "sys_platform == 'linux'" },
     { name = "python-multipart", marker = "sys_platform == 'linux'" },
     { name = "scikit-learn", marker = "sys_platform == 'linux'" },
-    { name = "scikit-multilearn", marker = "sys_platform == 'linux'" },
     { name = "streamlit", marker = "sys_platform == 'linux'" },
     { name = "torch", marker = "sys_platform == 'linux'" },
     { name = "torchvision", marker = "sys_platform == 'linux'" },
@@ -2167,18 +2164,19 @@ dev = [
 ]
 train = [
     { name = "albumentations", marker = "sys_platform == 'linux'" },
+    { name = "dvc", marker = "sys_platform == 'linux'" },
+    { name = "dvc-s3", marker = "sys_platform == 'linux'" },
     { name = "fastdup", marker = "sys_platform == 'linux'" },
     { name = "label-studio", marker = "sys_platform == 'linux'" },
     { name = "label-studio-sdk", marker = "sys_platform == 'linux'" },
     { name = "matplotlib", marker = "sys_platform == 'linux'" },
+    { name = "scikit-multilearn", marker = "sys_platform == 'linux'" },
     { name = "tensorboard", marker = "sys_platform == 'linux'" },
     { name = "tqdm", marker = "sys_platform == 'linux'" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "dvc", specifier = ">=2.40.0" },
-    { name = "dvc-s3", specifier = ">=2.21.0" },
     { name = "fastapi", specifier = ">=0.78.0" },
     { name = "gunicorn", specifier = ">=20.1.0" },
     { name = "llvmlite", specifier = ">=0.41.1" },
@@ -2191,7 +2189,6 @@ requires-dist = [
     { name = "pymatting", specifier = ">=1.1.8" },
     { name = "python-multipart", specifier = ">=0.0.5" },
     { name = "scikit-learn", specifier = ">=1.0.0" },
-    { name = "scikit-multilearn", specifier = ">=0.2.0" },
     { name = "streamlit", specifier = ">=1.16.0" },
     { name = "torch", url = "https://download.pytorch.org/whl/cpu/torch-1.13.1%2Bcpu-cp310-cp310-linux_x86_64.whl" },
     { name = "torchvision", url = "https://download.pytorch.org/whl/cpu/torchvision-0.14.1%2Bcpu-cp310-cp310-linux_x86_64.whl" },
@@ -2215,10 +2212,13 @@ dev = [
 ]
 train = [
     { name = "albumentations", specifier = ">=1.3.0" },
+    { name = "dvc", specifier = ">=2.40.0" },
+    { name = "dvc-s3", specifier = ">=2.21.0" },
     { name = "fastdup", specifier = ">=2.47" },
     { name = "label-studio", specifier = "==1.11.0" },
     { name = "label-studio-sdk", specifier = ">=0.0.32" },
     { name = "matplotlib", specifier = ">=3.6.2" },
+    { name = "scikit-multilearn", specifier = ">=0.2.0" },
     { name = "tensorboard", specifier = ">=2.11.0" },
     { name = "tqdm", specifier = ">=4.67.1" },
 ]
