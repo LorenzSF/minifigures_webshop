@@ -16,6 +16,7 @@ BASE_DATASET_PATH = DATA_DIR / "dataset.json"
 LABELED_DATASET_PATH = DATA_DIR / "dataset_labeled.json"
 MERGED_DATASET_PATH = DATA_DIR / "dataset_merged_labeled.json"
 ALL_PREDICTIONS_PATH = PREDICTIONS_DIR / "all_predictions.json"
+FIXED_LR_PREDICTIONS_PATH = PREDICTIONS_DIR / "all_predictions_fixed_lr.json"
 
 
 def load_json(path: Path) -> Any:

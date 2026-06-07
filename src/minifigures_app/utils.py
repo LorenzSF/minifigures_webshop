@@ -64,6 +64,39 @@ def predict_image(image: Image.Image) -> dict[str, float]:
     return payload["prediction"]
 
 
+def get_prediction(tag: str) -> dict[str, float]:
+    """Get precomputed model predictions for an image tag."""
+    try:
+        response = requests.get(
+            url=f"{URL}/data/get_prediction/", params={"tag": tag}, timeout=REQUEST_TIMEOUT_SECONDS
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except RequestException as exc:
+        msg = f"Failed to fetch prediction for '{tag}': {exc}"
+        raise ApiResponseError(msg) from exc
+    except ValueError as exc:
+        msg = "Prediction response is not valid JSON"
+        raise ApiResponseError(msg) from exc
+
+    return _validate_prediction_payload(payload)
+
+
+def _validate_prediction_payload(payload: object) -> dict[str, float]:
+    """Validate a prediction mapping returned by the API."""
+    if not isinstance(payload, dict):
+        msg = "Prediction response has an invalid format"
+        raise ApiResponseError(msg)
+
+    prediction: dict[str, float] = {}
+    for label, value in payload.items():
+        if not isinstance(label, str) or not isinstance(value, (int, float)):
+            msg = "Prediction response contains invalid scores"
+            raise ApiResponseError(msg)
+        prediction[label] = float(value)
+    return prediction
+
+
 def search_similar_faces(image: Image.Image, top_k: int = 6) -> FaceSearchPayload:
     """Search catalog products with faces similar to the provided image."""
     if top_k <= 0:

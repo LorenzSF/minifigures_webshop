@@ -2,6 +2,7 @@
 
 import io
 from http import HTTPStatus
+from pathlib import Path
 
 import pytest
 import torch
@@ -9,6 +10,7 @@ from fastapi.testclient import TestClient
 from PIL import Image
 from starlette.exceptions import HTTPException
 
+import minifigures_api.routers.data as data_router_module
 import minifigures_api.routers.face_search as face_search_router_module
 import minifigures_api.routers.predict as predict_router_module
 from minifigures_api.api import app
@@ -34,6 +36,39 @@ def test_get_image_tags_returns_list() -> None:
 def test_get_image_missing_tag_returns_404() -> None:
     """Test that requesting a missing image returns 404."""
     response = client.get("/data/get_image/", params={"tag": "__missing_tag__"})
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+
+def test_get_prediction_returns_precomputed_scores(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """Test that precomputed catalog predictions are served by image tag."""
+    predictions_path = tmp_path / "all_predictions_fixed_lr.json"
+    predictions_path.write_text(
+        '{"predictions": {"sw0001": {"helmet": 0.8, "robot": 0.2}}}', encoding="utf-8"
+    )
+    monkeypatch.setattr(data_router_module, "FIXED_LR_PREDICTIONS_PATH", predictions_path)
+    data_router_module._load_fixed_lr_predictions.cache_clear()
+
+    response = client.get("/data/get_prediction/", params={"tag": "sw0001"})
+
+    data_router_module._load_fixed_lr_predictions.cache_clear()
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {"helmet": 0.8, "robot": 0.2}
+
+
+def test_get_prediction_missing_tag_returns_404(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """Test that unknown prediction tags return 404."""
+    predictions_path = tmp_path / "all_predictions_fixed_lr.json"
+    predictions_path.write_text('{"predictions": {}}', encoding="utf-8")
+    monkeypatch.setattr(data_router_module, "FIXED_LR_PREDICTIONS_PATH", predictions_path)
+    data_router_module._load_fixed_lr_predictions.cache_clear()
+
+    response = client.get("/data/get_prediction/", params={"tag": "__missing_tag__"})
+
+    data_router_module._load_fixed_lr_predictions.cache_clear()
     assert response.status_code == HTTPStatus.NOT_FOUND
 
 

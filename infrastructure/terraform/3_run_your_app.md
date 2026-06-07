@@ -89,6 +89,7 @@ Now your image is available in your ECR repository and your dependencies are ava
 you can run your application on your EC2 instance. In this project, the deployed API needs both:
 
 * the minifigures dataset under `data/data/minifigures`
+* the precomputed predictions under `data/data/predictions/all_predictions_fixed_lr.json`
 * the trained model artifacts under `data/models/my_model`
 
 The Docker image intentionally does not embed `data/`, so the EC2 host must prepare a persistent runtime
@@ -117,6 +118,12 @@ curl -fL https://roai-data-readonly.s3.eu-central-1.amazonaws.com/dataset.json \
 
 # Pull your trained model from S3
 aws s3 cp s3://<your-S3-bucket-name>/models/my_model /root/minifigures-runtime/models/my_model --recursive
+
+# Pull precomputed predictions from S3
+mkdir -p /root/minifigures-runtime/data/predictions
+aws s3 cp \
+  s3://<your-S3-bucket-name>/predictions/all_predictions_fixed_lr.json \
+  /root/minifigures-runtime/data/predictions/all_predictions_fixed_lr.json
 
 # Create a Docker network for your containers to be able to communicate
 docker network create kulroai-net 2>/dev/null || true
@@ -163,9 +170,13 @@ A few notes about the commands above and the EC2 environment:
   container named `app` under the URL `http://api:8000`. The same applies from `api` to `app` and any other container
   that would be running in the Docker network.
 
-* If prediction requests return `404` while the site loads, the most common cause is a missing
+* If upload prediction requests return `404` while the site loads, the most common cause is a missing
   `/root/minifigures-runtime/models/my_model` folder on the EC2 host. Re-sync the model artifacts from S3
   and retry the request.
+
+* If catalog prediction requests return `404`, check that
+  `/root/minifigures-runtime/data/predictions/all_predictions_fixed_lr.json` exists. Re-sync the predictions
+  artifact from S3 and retry the request.
 
 Once done, you can head to your domain name (here `testuser.realization-of-ai.com`) and you should see
 your application running live! Congratulations, you just deployed your application in the Cloud! 🎉

@@ -5,14 +5,23 @@ from __future__ import annotations
 
 from html import escape
 from random import choice
+from typing import NamedTuple
 
 import streamlit as st
 from PIL import Image
 
-from minifigures_app.utils import get_image, list_im_tags, predict_image
+from minifigures_app.utils import get_image, get_prediction, list_im_tags, predict_image
 
 HIGH_CONFIDENCE_THRESHOLD = 0.6
 MEDIUM_CONFIDENCE_THRESHOLD = 0.4
+MARKET_SELECTED_IMAGE_TAG = "market_selected_image_tag"
+
+
+class ProductImage(NamedTuple):
+    """Image selected for display with its optional catalog tag."""
+
+    image: Image.Image
+    tag: str | None
 
 
 def main():
@@ -25,35 +34,44 @@ def main():
 
     # Toggle what to show
     options = ["Upload image", "Random example"]
-    selected_product = st.session_state.get("selected_product_tag")
+    selected_product = st.session_state.get(MARKET_SELECTED_IMAGE_TAG)
     if selected_product:
         options = ["Marketplace selection", *options]
 
     show = st.radio("What do you want to do?", options)
     if show == "Marketplace selection":
-        im = get_selected_from_marketplace()
+        product_image = get_selected_from_marketplace()
     elif show == "Upload image":
-        im = get_upload()
+        product_image = get_upload()
     elif show == "Random example":
-        im = get_random()
+        product_image = get_random()
     else:
         st.error("No option selected.")
         return
 
     # Show error if no image
-    if im is None:
+    if product_image is None:
         st.error("No image selected.")
         return
 
     # Make prediction
-    pred = predict_image(image=im)
+    pred = predict_product_image(product_image)
 
     image_column, prediction_column = st.columns([1, 1.25], gap="large")
     with image_column:
-        st.image(im, width="stretch")
+        st.image(product_image.image, width="stretch")
     with prediction_column:
+        if product_image.tag:
+            st.caption(f"Prediction source: precomputed JSON for {product_image.tag}")
         st.write("Predictions:")
         render_prediction_bars(pred)
+
+
+def predict_product_image(product_image: ProductImage) -> dict[str, float]:
+    """Predict using precomputed catalog scores when a tag is available."""
+    if product_image.tag:
+        return get_prediction(product_image.tag)
+    return predict_image(image=product_image.image)
 
 
 def render_prediction_bars(predictions: dict[str, float]) -> None:
@@ -151,7 +169,7 @@ def _prediction_color_class(value: float) -> str:
     return "low"
 
 
-def get_upload() -> Image.Image | None:
+def get_upload() -> ProductImage | None:
     """Get an image from the user."""
     # Upload a file
     uploaded_file = st.file_uploader("Upload image", ["png", "jpg"], accept_multiple_files=False)
@@ -159,27 +177,27 @@ def get_upload() -> Image.Image | None:
     # Create prediction for the file
     if uploaded_file:
         # Convert to PIL
-        return Image.open(uploaded_file).convert("RGB")
+        return ProductImage(image=Image.open(uploaded_file).convert("RGB"), tag=None)
     return None
 
 
-def get_random() -> Image.Image | None:
+def get_random() -> ProductImage | None:
     """Get a random image."""
     # Get all possible image tags
     im_tags = list_im_tags()
 
     # Randomly select one and return it
-    im = choice(im_tags)  # noqa: S311
-    return get_image(im)
+    image_tag = choice(im_tags)  # noqa: S311
+    return ProductImage(image=get_image(image_tag), tag=image_tag)
 
 
-def get_selected_from_marketplace() -> Image.Image | None:
+def get_selected_from_marketplace() -> ProductImage | None:
     """Get the image selected from marketplace session state."""
-    image_tag = st.session_state.get("selected_product_tag")
+    image_tag = st.session_state.get(MARKET_SELECTED_IMAGE_TAG)
     if not image_tag:
         return None
     st.caption(f"Selected from market: {image_tag}")
-    return get_image(image_tag)
+    return ProductImage(image=get_image(image_tag), tag=image_tag)
 
 
 if __name__ == "__main__":

@@ -39,6 +39,18 @@ def test_search_similar_faces_validates_payload(monkeypatch: pytest.MonkeyPatch)
     assert payload["matches"] == [{"tag": "sw0001", "score": 0.9}]
 
 
+def test_get_prediction_validates_payload(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Precomputed prediction client should return validated scores."""
+
+    def fake_get(**kwargs: object) -> FakeResponse:
+        assert kwargs["params"] == {"tag": "sw0001"}
+        return FakeResponse({"helmet": 0.8, "robot": 1})
+
+    monkeypatch.setattr(utils.requests, "get", fake_get)
+
+    assert utils.get_prediction("sw0001") == {"helmet": 0.8, "robot": 1.0}
+
+
 def test_search_similar_faces_rejects_missing_matches(monkeypatch: pytest.MonkeyPatch) -> None:
     """Face search client should reject malformed API payloads."""
 
