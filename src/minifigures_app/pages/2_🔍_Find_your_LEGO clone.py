@@ -20,13 +20,18 @@ def main() -> None:
     st.title("Face Search")
     st.markdown("---")
 
-    uploaded_file = st.file_uploader("Upload a face or minifigure image", ["png", "jpg", "jpeg"])
+    source = st.radio("Image source", ["Upload a file", "Use webcam"], horizontal=True)
+    if source == "Upload a file":
+        query_file = st.file_uploader("Upload a face or minifigure image", ["png", "jpg", "jpeg"])
+    else:
+        query_file = st.camera_input("Take a picture")
+
     top_k = st.slider("Results", min_value=1, max_value=MAX_TOP_K, value=DEFAULT_TOP_K)
 
-    if uploaded_file is None:
+    if query_file is None:
         return
 
-    query_image = Image.open(uploaded_file).convert("RGB")
+    query_image = Image.open(query_file).convert("RGB")
     st.image(query_image, caption="Query image", width=260)
 
     try:
