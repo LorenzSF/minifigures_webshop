@@ -169,7 +169,7 @@ def _render_selected_image_detail(image_tag: str, labels_by_image: dict[str, lis
 
     image_column, details_column = st.columns([1.35, 1], gap="large")
     with image_column:
-        st.image(_rescale_image(image, resolution=520), use_column_width=True)
+        st.image(_rescale_image(image, resolution=520), width="stretch")
     with details_column:
         st.subheader("Name")
         st.write(image_tag)

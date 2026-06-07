@@ -13,6 +13,8 @@
 .dvc/cache/
 .dvc/tmp/
 data/
+# ...except the small label file the Market page reads at runtime (LABELS_DATASET_PATH)
+!data/data/dataset_merged_labeled.json
 
 # No notebooks
 *.ipynb

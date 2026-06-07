@@ -74,6 +74,10 @@ jobs:
           aws ecr get-login-password --region "$AWS_REGION" |
             docker login --username AWS --password-stdin "$ECR_REGISTRY"
 
+          docker stop api app 2>/dev/null || true
+          docker rm api app 2>/dev/null || true
+          docker image prune -af
+
           docker pull "$IMAGE_URI"
 
           mkdir -p /home/ec2-user/minifigures-runtime/data /home/ec2-user/minifigures-runtime/models
@@ -95,9 +99,18 @@ jobs:
           test -f /home/ec2-user/minifigures-runtime/models/my_model/metadata.json
           test -f /home/ec2-user/minifigures-runtime/models/my_model/weights.pt
 
+          aws s3 cp "s3://$S3_BUCKET_NAME/models/face_cropper" \
+            /home/ec2-user/minifigures-runtime/models/face_cropper \
+            --recursive
+          test -f /home/ec2-user/minifigures-runtime/models/face_cropper/metadata.json
+          test -f /home/ec2-user/minifigures-runtime/models/face_cropper/weights.pt
+
+          aws s3 cp "s3://$S3_BUCKET_NAME/data/face_index" \
+            /home/ec2-user/minifigures-runtime/data/face_index \
+            --recursive
+          test -f /home/ec2-user/minifigures-runtime/data/face_index/face_embeddings.pt
+
           docker network create kulroai-net 2>/dev/null || true
-          docker stop api app 2>/dev/null || true
-          docker rm api app 2>/dev/null || true
 
           docker run \
             -d \

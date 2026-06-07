@@ -50,7 +50,7 @@ def main():
 
     image_column, prediction_column = st.columns([1, 1.25], gap="large")
     with image_column:
-        st.image(im, use_column_width=True)
+        st.image(im, width="stretch")
     with prediction_column:
         st.write("Predictions:")
         render_prediction_bars(pred)

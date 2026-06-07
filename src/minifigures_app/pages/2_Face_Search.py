@@ -46,7 +46,7 @@ def main() -> None:
         column = columns[idx % len(columns)]
         with column:
             image = get_image(match["tag"])
-            st.image(_rescale_image(image), use_column_width=True)
+            st.image(_rescale_image(image), width="stretch")
             st.write(match["tag"])
             st.caption(f"Similarity: {match['score']:.2f}")
 
