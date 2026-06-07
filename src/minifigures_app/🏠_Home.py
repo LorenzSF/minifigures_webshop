@@ -62,6 +62,11 @@ HERO_STYLE = f"""
 }}
 .speech-bubble h1 {{
     margin-top: 0;
+    font-size: 1.6rem;
+    line-height: 1.3;
+}}
+.speech-bubble p {{
+    margin-bottom: 0;
 }}
 </style>
 """
@@ -85,7 +90,7 @@ def main():
 <img src="{_image_data_uri(HERO_IMAGE_PATH)}" alt="Minifigure mascot" />
 </div>
 <div class="speech-bubble">
-<h1>Welcome to the Lorenzo's Minifigures webshop!</h1>
+<h1>Welcome to Lorenzo's Minifigures webshop!</h1>
 <p>Here you'll find more than 6,000 images to choose from, but only one will be your perfect clone. Let's find it!</p>
 </div>
 </div>

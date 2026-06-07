@@ -8,8 +8,8 @@ from PIL import Image, ImageOps
 
 from minifigures_app.utils import get_image, search_similar_faces
 
-DEFAULT_TOP_K = 6
-MAX_TOP_K = 24
+DEFAULT_TOP_K = 3
+MAX_TOP_K = 6
 RESULT_IMAGE_SIZE = 180
 
 
@@ -17,13 +17,28 @@ def main() -> None:
     """Run the Streamlit Face Search page."""
     st.set_page_config(page_title="Face Search")
 
-    st.title("Face Search")
+    st.title("🔍 Find your LEGO clone")
     st.markdown("---")
 
     source = st.radio("Image source", ["Upload a file", "Use webcam"], horizontal=True)
     if source == "Upload a file":
         query_file = st.file_uploader("Upload a face or minifigure image", ["png", "jpg", "jpeg"])
     else:
+        with st.expander("🛠️ Camera not opening?"):
+            st.markdown(
+                "Browsers block camera access on websites that aren't served over "
+                "HTTPS, which is the case for this webshop today.\n"
+                "- Open `chrome://flags/#unsafely-treat-insecure-origin-as-secure` "
+                "in Chrome\n"
+                "- Paste this site's address (copied from your browser's address "
+                "bar, including `http://`) into the origin box and set the flag "
+                "to **Enabled**\n"
+                "- Relaunch Chrome, reload this page, then allow camera access "
+                "when prompted\n\n"
+                "This only changes things on your own browser. For everyone else, "
+                "**Upload a file** with a photo from your phone or laptop camera "
+                "remains the reliable option."
+            )
         query_file = st.camera_input("Take a picture")
 
     top_k = st.slider("Results", min_value=1, max_value=MAX_TOP_K, value=DEFAULT_TOP_K)
