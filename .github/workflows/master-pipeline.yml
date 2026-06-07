@@ -110,6 +110,12 @@ jobs:
             --recursive
           test -f /home/ec2-user/minifigures-runtime/data/face_index/face_embeddings.pt
 
+          mkdir -p /home/ec2-user/minifigures-runtime/data/predictions
+
+          aws s3 cp "s3://$S3_BUCKET_NAME/predictions/all_predictions_fixed_lr.json" \
+            /home/ec2-user/minifigures-runtime/data/predictions/all_predictions_fixed_lr.json
+          test -f /home/ec2-user/minifigures-runtime/data/predictions/all_predictions_fixed_lr.json
+
           docker network create kulroai-net 2>/dev/null || true
 
           docker run \
