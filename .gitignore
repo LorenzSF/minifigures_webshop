@@ -32,7 +32,7 @@ data/
 
 # Jupyter
 #*.ipynb  # COMMENTED - I need to track notebooks for assignments
-.ipynb_checkpoints/
+#.ipynb_checkpoints/
 #notebooks/ # COMMENTED - I need to track the notebooks folder
 
 # Logs
